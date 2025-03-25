@@ -1,0 +1,41 @@
+: EV Fleet Charge Planning Tool
+Overview
+You are tasked with building a simple web application to help fleet operators estimate the charging needs of their electric vehicle (EV) fleet. The tool should allow users to input fleet details and receive key charging insights.
+Requirements
+Your application should include the following functionality:
+1. User Input Fields:
+• Number of EVs in the fleet.
+• Average daily mileage per EV.
+• Battery capacity of each EV (e.g., 50 kWh, 75 kWh, 100 kWh).
+• Charging power rating (e.g., 7.4 kW, 50 kW, 150 kW).
+• Vehicle efficiency (miles per kWh) – see Assumptions section
+2. Calculations:
+• Daily Energy Consumption per EV – how would you calculate this?
+• Charging Time Required per Vehicle – how would you calculate this?
+• Total Energy Demand for the Fleet – how would you calculate this?
+3. Frontend Expectations:
+• Ideally React (Next.js preferred) with a clean and simple UI. Any JS framework you are familiar with if this is not possible.
+• Dynamic updates as users modify input values.
+• Validation for realistic inputs.
+• Data Visualisations (Graph/Metrics)
+4. Backend/API Expectations:
+• Simple API (Node.js/Express or Next.js API route) or global function to handle calculations.
+5. Optional Enhancements (Bonus Points):
+• Allow users to select EV types with predefined efficiency values.
+• Consider how battery degradation affects long-term efficiency.
+• Introduce a cost estimation feature based on electricity tariffs.
+• Handle edge cases such as different efficiency rates or partial charging scenarios.
+Key Considerations
+• Scalability: If the fleet size grows to 1,000+ EVs, how would your solution handle performance?
+ 
+Assumptions
+• Vehicle efficiencies: Car: 4.5 mi/kWh. Small Van: 3.5 mi/kWh. Large Van: 2.5mi/kWh. HGV: 1.2mi/kWh
+Expectations
+• Code Structure & Clarity: Write clean, modular, and readable code.
+• Problem-Solving Approach: Explain your reasoning and approach with inline comments
+• Performance Considerations: Ensure efficient calculations that can scale.
+• Follow-up Discussion: Be prepared to discuss your approach, challenges, and potential improvements.
+Submission & Discussion
+• You will have time to complete the task and then discuss your approach with us during a site visit (preferred).
+• Be ready to walk through your code, explaining design choices and potential enhancements/limitations
+Good luck, and we look forward to seeing your solution!
