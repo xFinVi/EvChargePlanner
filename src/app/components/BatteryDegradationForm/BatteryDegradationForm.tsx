@@ -1,18 +1,13 @@
 import React from "react";
-import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { FormInputs } from "@/app/Types/formSchema";
-import Input from "../Input/Input";
 
-interface BatteryDegradationFormProps {
-  register: UseFormRegister<FormInputs>;
-  errors: FieldErrors<FormInputs>;
-}
+import Input from "../Input/Input";
+import { BatteryDegradationFormProps } from "@/app/Types/formData";
 
 const BatteryDegradationForm: React.FC<BatteryDegradationFormProps> = ({
   register,
   errors,
 }) => (
-  <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-3">
+  <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-3 max-w-[650px] mx-auto">
     <Input
       label="Initial Efficiency (miles/kWh)"
       id="initialEfficiency"

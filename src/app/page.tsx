@@ -2,7 +2,9 @@
 import React, { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Results from "./components/Results/Results";
-import BatteryDegradationChart from "./components/Graph/GraphData";
+import BatteryDegradationChart from "./components/BatteryDegradationChart/BatteryDegradationChart";
+import Footer from "./components/Footer/Footer";
+import BatteryDegradationTable from "./components/BatteryTable/BatteryTable";
 
 const Home: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,34 +13,40 @@ const Home: React.FC = () => {
     batteryCapacity: 0,
     chargingPower: 0,
     efficiency: 0,
+    annualMileage: 0,
+    currentMileage: 0,
+    currentBatteryHealth: 100,
     initialEfficiency: 4.0,
     degradationRate: 0.06,
     years: 10,
   });
+
   return (
-    <div className="min-h-screen p-6 bg-white">
-      <div className="my-8 text-2xl font-bold text-center text-gray-600">
+    <div className="min-h-screen ">
+      <div className="p-8 mb-8 text-2xl font-bold text-center text-white bg-red-900">
         <h1>EV Charge Planning Tool</h1>
       </div>
-      <div className="max-w-[1150px] mx-auto  ">
+      <div className="mx-auto">
         <Navbar
           onFormChange={(data) => {
             setFormData((prev) => ({ ...prev, ...data }));
           }}
         />
-        <div className="flex flex-col gap-3 mt-10 md:flex-row">
+        <div className="w-full mx-auto flex flex-col gap-3 mt-10  max-w-[1150px] px-6">
           <div className="flex-1">
             <Results formData={formData} />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 w-full md:w-[650] mx-auto md:h-[415px]">
             <BatteryDegradationChart
               initialEfficiency={formData.initialEfficiency}
               degradationRate={formData.degradationRate}
               years={formData.years}
             />
           </div>
+          <BatteryDegradationTable formData={formData} />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

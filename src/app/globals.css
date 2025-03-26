@@ -14,11 +14,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #202020;
+    --background: #ffffff;
     --foreground: #ededed;
   }
 }
 
+@layer utilities {
+  .custom-xs-grid {
+    @apply grid-cols-2;
+  }
+}
 body {
   background: var(--background);
   color: var(--foreground);

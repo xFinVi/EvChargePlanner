@@ -1,25 +1,15 @@
-"use client";
-import React from "react";
 import { FaCar, FaBatteryFull, FaPlug, FaPoundSign } from "react-icons/fa";
 import Data from "../Data/Data";
 import {
   calculateDailyUsage,
   calculateChargingTime,
   calculateTotalEnergyDemand,
+  isValidNumber,
 } from "@/app/utils/utils";
+import { ResultsProps } from "@/app/Types/formData";
+import { useMemo } from "react";
 
-interface ResultsProps {
-  formData: {
-    numberOfEvs: number;
-    dailyMileage: number;
-    batteryCapacity: number;
-    chargingPower: number;
-    efficiency: number;
-  };
-  tariff?: number;
-}
-
-const Results: React.FC<ResultsProps> = ({ formData, tariff = 0.25 }) => {
+export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
   const {
     numberOfEvs,
     dailyMileage,
@@ -28,37 +18,40 @@ const Results: React.FC<ResultsProps> = ({ formData, tariff = 0.25 }) => {
     efficiency,
   } = formData;
 
-  const isValidNumber = (value: number) => !isNaN(value) && value > 0;
-
-  const dailyEnergy =
-    isValidNumber(dailyMileage) && isValidNumber(efficiency)
+  const dailyEnergy = useMemo(() => {
+    return isValidNumber(dailyMileage) && isValidNumber(efficiency)
       ? Number(calculateDailyUsage(dailyMileage, efficiency))
       : 0;
+  }, [dailyMileage, efficiency]);
 
-  const chargingTime =
-    isValidNumber(batteryCapacity) && isValidNumber(chargingPower)
+  const chargingTime = useMemo(() => {
+    return isValidNumber(batteryCapacity) && isValidNumber(chargingPower)
       ? Number(calculateChargingTime(batteryCapacity, chargingPower))
       : 0;
+  }, [batteryCapacity, chargingPower]);
 
-  const totalEnergy =
-    isValidNumber(numberOfEvs) &&
-    isValidNumber(dailyMileage) &&
-    isValidNumber(efficiency)
+  const totalEnergy = useMemo(() => {
+    return isValidNumber(numberOfEvs) &&
+      isValidNumber(dailyMileage) &&
+      isValidNumber(efficiency)
       ? Number(
           calculateTotalEnergyDemand(numberOfEvs, dailyMileage, efficiency)
         )
       : 0;
+  }, [numberOfEvs, dailyMileage, efficiency]);
 
-  const dailyCost = totalEnergy * tariff;
+  const cost = useMemo(() => {
+    return totalEnergy * tariff;
+  }, [totalEnergy, tariff]);
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-2">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:gap-8 lg:gap-18">
       <Data
-        icon={FaBatteryFull}
+        icon={FaCar}
         title="Daily Energy per EV"
         unit="kWh"
         value={dailyEnergy}
-        description="Energy used per vehicle daily"
+        description="Energy per vehicle daily"
       />
       <Data
         icon={FaPlug}
@@ -68,7 +61,7 @@ const Results: React.FC<ResultsProps> = ({ formData, tariff = 0.25 }) => {
         description="Time to charge one EV"
       />
       <Data
-        icon={FaCar}
+        icon={FaBatteryFull}
         title="Total Energy Demand"
         unit="kWh"
         value={totalEnergy}
@@ -78,11 +71,9 @@ const Results: React.FC<ResultsProps> = ({ formData, tariff = 0.25 }) => {
         icon={FaPoundSign}
         title="Daily Electricity Cost"
         unit="£"
-        value={dailyCost}
+        value={cost}
         description={`Daily cost at £${tariff}/kWh`}
       />
     </div>
   );
-};
-
-export default Results;
+}

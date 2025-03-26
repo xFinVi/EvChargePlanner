@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { BatteryDegradationChartProps } from "@/app/Types/formData";
 
 ChartJS.register(
   CategoryScale,
@@ -19,17 +20,11 @@ ChartJS.register(
   Legend
 );
 
-interface BatteryDegradationChartProps {
-  initialEfficiency: number;
-  degradationRate: number;
-  years: number;
-}
-
-const BatteryDegradationChart: React.FC<BatteryDegradationChartProps> = ({
+export default function BatteryDegradationChart({
   initialEfficiency,
   degradationRate,
   years,
-}) => {
+}: BatteryDegradationChartProps) {
   const labels = Array.from({ length: years + 1 }, (_, i) => `Year ${i}`);
   const efficiencyData = labels.map((_, year) => {
     const remainingCapacity = 1 - degradationRate * year;
@@ -59,33 +54,19 @@ const BatteryDegradationChart: React.FC<BatteryDegradationChartProps> = ({
         color: "#fff",
         font: { size: 16 },
       },
-      tooltip: {
-        callbacks: {
-          label: (context: any) =>
-            `${context.dataset.label}: ${context.parsed.y.toFixed(
-              2
-            )} miles/kWh`,
-        },
-      },
     },
     scales: {
-      x: {
-        title: { display: true, text: "Years", color: "#fff" },
-        ticks: { color: "#fff" },
-      },
+      x: { title: { display: true, text: "Years", color: "#333" } },
       y: {
-        title: { display: true, text: "Efficiency (miles/kWh)", color: "#fff" },
-        ticks: { color: "#fff" },
+        title: { display: true, text: "Efficiency (miles/kWh)", color: "#333" },
         beginAtZero: true,
       },
     },
   };
 
   return (
-    <div className="w-full h-[300px] md:h-[415px] p-4 m-auto bg-gray-900 rounded-lg shadow-md">
+    <div className="w-full h-[300px] md:h-[415px] p-4 m-auto rounded-lg shadow-md">
       <Bar data={data} options={options} />
     </div>
   );
-};
-
-export default BatteryDegradationChart;
+}

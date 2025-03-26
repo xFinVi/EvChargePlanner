@@ -1,13 +1,7 @@
+import { DataProps } from "@/app/Types/formData";
+import { toDecimalMark } from "@/app/utils/utils";
 import React from "react";
 
-interface DataProps {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  unit: string;
-  description: string;
-  value: number;
-}
-const toDecimalMark = (num: number): string => num.toLocaleString("en-GB");
 const Data: React.FC<DataProps> = ({
   value,
   icon: Icon,
@@ -16,15 +10,19 @@ const Data: React.FC<DataProps> = ({
   description,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-gray-800 rounded-md shadow-md">
-      <div className="flex flex-col items-center mb-2">
-        <h3 className="text-lg font-semibold text-gray-200">{title}</h3>
-        <Icon className="mr-2 text-purple-400" />
+    <div className="flex flex-col items-center justify-center p-4 delay-500 rounded-md shadow-md hover:shadow-green-200">
+      <div className="flex flex-col items-center justify-start flex-1 mb-2 sm">
+        <h3 className="text-sm font-semibold text-gray-700 md:text-md">
+          {title}
+        </h3>
       </div>
-      <p className="my-2 text-2xl text-white">
-        {value !== undefined ? `${toDecimalMark(value)} ${unit}` : "N/A"}
+      <p className="flex items-center w-full my-2 text-2xl text-gray-600 justify-evenly">
+        <Icon className="my-2 mr-2 text-sm text-red-800 sm:text-lg" />
+        <span className="text-xl font-semibold text-gray-700">
+          {value !== undefined ? `${toDecimalMark(value)} ${unit}` : "N/A"}
+        </span>
       </p>
-      <p className="mt-1 text-sm text-gray-400">{description}</p>
+      <p className="mt-1 text-sm text-gray-500">{description}</p>
     </div>
   );
 };

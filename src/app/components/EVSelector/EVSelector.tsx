@@ -3,17 +3,11 @@ import React, { useState, useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { FormInputs } from "@/app/Types/formSchema";
 import { EVTemplate } from "@/app/Types/formData";
+import { EV_TYPES } from "@/app/Constants/DBdata";
 
 interface EVSelectorProps {
   form: UseFormReturn<FormInputs>;
 }
-
-const EV_TYPES = [
-  { name: "Car" },
-  { name: "Small Van" },
-  { name: "Large Van" },
-  { name: "HGV" },
-];
 
 const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
   const [templates, setTemplates] = useState<EVTemplate[]>([]);
@@ -22,45 +16,44 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
 
   const { register, watch, setValue } = form;
   const evType = watch("evType");
-
   useEffect(() => {
-    if (evType) {
+    if (evType && !templates.find((t) => t.name === evType)) {
+      setLoading(true);
+      const fetchTemplate = async () => {
+        try {
+          const res = await fetch(`/api/templates/${evType}`);
+          if (!res.ok) setError(`Failed to fetch ${evType} data`);
+          const data: EVTemplate = await res.json();
+          setTemplates((prev) => [...prev, data]);
+          setValue("efficiency", data.efficiency);
+          setValue("batteryCapacity", data.batteryCapacity);
+          setValue("initialEfficiency", data.efficiency);
+        } catch (err) {
+          setError(`Failed to load ${evType} details, ${err}`);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchTemplate();
+    } else if (evType) {
+      // Use the already loaded template if it's available
       const existingTemplate = templates.find((t) => t.name === evType);
-      if (!existingTemplate) {
-        const fetchTemplate = async () => {
-          setLoading(true);
-          try {
-            const res = await fetch(`/api/templates/${evType}`);
-            if (!res.ok) throw new Error(`Failed to fetch ${evType} data`);
-            const data: EVTemplate = await res.json();
-            setTemplates((prev) => [...prev, data]);
-            setValue("efficiency", data.efficiency);
-            setValue("batteryCapacity", data.batteryCapacity);
-            setValue("initialEfficiency", data.efficiency);
-          } catch (err) {
-            setError(`Failed to load ${evType} details`);
-          } finally {
-            setLoading(false);
-          }
-        };
-        fetchTemplate();
-      } else {
+      if (existingTemplate) {
         setValue("efficiency", existingTemplate.efficiency);
         setValue("batteryCapacity", existingTemplate.batteryCapacity);
-
         setValue("initialEfficiency", existingTemplate.efficiency);
       }
     }
   }, [evType, templates, setValue]);
 
   return (
-    <div className="w-1/4 mx-auto mt-8">
+    <div className="max-w-[185px] mx-auto mt-8">
       <label htmlFor="evType" className="text-gray-500">
         EV Type (Optional)
       </label>
       <select
         id="evType"
-        className="block w-full p-3 mt-1 text-white bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="block w-full p-2 mt-1 text-gray-700 rounded border-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
         {...register("evType")}
         disabled={loading}
       >
