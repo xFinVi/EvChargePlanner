@@ -13,45 +13,50 @@ interface BatteryDegradationTableProps {
 export default function BatteryDegradationTable({
   formData,
 }: BatteryDegradationTableProps) {
-  // extracting the data from the form and converting them to numbers to complete our calculations
-  const batteryCapacity = Number(formData.batteryCapacity) || 0;
-  const currentBatteryHealth = Number(formData.currentBatteryHealth) || 100;
-  const degradationRate = Number(formData.degradationRate) || 0;
-  const efficiency = Number(formData.efficiency) || 0;
-  const annualMileage = Number(formData.annualMileage) || 0;
-  const currentMileage = Number(formData.currentMileage) || 0;
-  const years = Number(formData.years) || 0;
+  // extracting the data from the form to complete our calculations
+  const batteryCapacity = formData.batteryCapacity || 0;
+  const currentBatteryHealth = formData.currentBatteryHealth || 100;
+  const degradationRate = formData.degradationRate || 0;
+  const efficiency = formData.efficiency || 0;
+  const annualMileage = formData.annualMileage || 0;
+  const currentMileage = formData.currentMileage || 0;
+  const years = formData.years || 0;
 
-  // Validation function to check if all required data is present and valid
-  const isDataComplete = useMemo(() => {
-    return (
-      batteryCapacity > 0 &&
-      degradationRate > 0 &&
-      efficiency > 0 &&
-      annualMileage > 0 &&
-      currentMileage >= 0 && // Allow 0 for currentMileage in case we have a new vehicle
-      years > 0 &&
-      currentBatteryHealth > 0
-    );
-  }, [
-    batteryCapacity,
-    currentBatteryHealth,
-    degradationRate,
-    efficiency,
-    annualMileage,
-    currentMileage,
-    years,
-  ]);
+ //  checking if all required data is present and valid
+// Using useMemo to recompute only when dependencies change, to avoid re-renders and optimise performance
+const isDataComplete = useMemo(() => {
+  return (
+    batteryCapacity > 0 &&
+    degradationRate > 0 &&
+    efficiency > 0 &&
+    annualMileage > 0 &&
+    currentMileage >= 0 && // Allow 0 for currentMileage in case we have a new vehicle
+    years > 0 &&
+    currentBatteryHealth > 0
+  );
+}, [
+  batteryCapacity,
+  degradationRate,
+  efficiency,
+  annualMileage,
+  currentMileage,
+  years,
+  currentBatteryHealth,
+]);
+
+
+// useMemo memoizes the result of the function, re calculating it only when one of the dependencies changes.
+//  This prevents unnecessary recalculations
+//  The dependencies array includes all variables that we are watching .
+// - If any of these dependencies change, useMemo will recompute our variable, otherwise, it returns the cached value.
 
   const degradationData = useMemo(() => {
-    if (!isDataComplete) {
-      return [];
-    }
+    if (!isDataComplete) return [];
 
     const initialCapacity = batteryCapacity * (currentBatteryHealth / 100);
     const replacementThreshold = batteryCapacity * 0.7; // 70% of battery threshold capacity to replace
     const replacementMileageThreshold = 150_000;
-
+ // create an array of all degrdation data for each year
     return Array.from({ length: years + 1 }, (_, year) => {
       const remainingCapacity =
         initialCapacity * Math.pow(1 - (degradationRate / 100), year); // calculates the input of the user as a percentage so if the user adds 2 its considered a 2%
@@ -64,7 +69,7 @@ export default function BatteryDegradationTable({
 
       return {
         year,
-        remainingCapacity: remainingCapacity.toFixed(2),
+        remainingCapacity: remainingCapacity.toFixed(2), //formating the results
         healthPercentage: Number(healthPercentage.toFixed(1)),
         estimatedRange: Number(estimatedRange.toFixed(0)),
         totalMileage: toDecimalMark(totalMileage),
@@ -105,8 +110,8 @@ export default function BatteryDegradationTable({
       {formData.degradationRate && (
         <p className="text-center text-gray-500">
           {" "}
-          An estimate based on a {Number(formData.degradationRate) * 100}%
-          degradation rate per year.
+          An estimate based on a {formData.degradationRate}%
+          battery degradation rate per year.
         </p>
       )}
       <table className="w-full mt-4 text-xs bg-gray-50 sm:text-sm">
@@ -122,15 +127,16 @@ export default function BatteryDegradationTable({
         </thead>
         <tbody>
           {degradationData.map((row) => {
-            // converting the string to a number without special characters to make comparison
+            // converting the string to a number and 'removing' special characters to make comparison
             const mileageNumber = Number(row.totalMileage.replace(/,/g, ""));
-
+  //  conditional classes to display numbers in differnt colors
             const healthColor =
               row.healthPercentage >= 80
                 ? "text-green-600"
                 : row.healthPercentage >= 65
                 ? "text-yellow-600"
                 : "text-red-600";
+               
             const mileageColor =
               mileageNumber < 80000
                 ? "text-green-600"
@@ -149,6 +155,8 @@ export default function BatteryDegradationTable({
                 : "text-red-600";
 
             return (
+
+              /* MAPPING THROGUH ARA DATA AND DISPLAYING THEM IN A TABLE FORMAT */
               <tr
                 key={row.year}
                 className="text-center text-gray-700 border-gray-400"

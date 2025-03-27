@@ -5,7 +5,7 @@ interface InputProps {
   id: string;
   type: string;
   error?: string;
-  [key: string]: unknown; // To allow for any other props
+  [key: string]: unknown; // To allow for any other props as key:value pair
 }
 
 const Input: React.FC<InputProps> = ({ label, id, type, error, ...props }) => {

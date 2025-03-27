@@ -17,7 +17,7 @@ export const calculateTotalEnergyDemand = (
 export const toDecimalMark = (num: number): string =>
   num.toLocaleString("en-GB");
 
-export const isValidNumber = (value: number) => !isNaN(value) && value > 0;
+
 
 //   Daily Energy Consumption per EV – how would you calculate this?
 // • Charging Time Required per Vehicle – how would you calculate this?

@@ -28,7 +28,7 @@ const Home: React.FC = () => {
       </div>
       <div className="mx-auto">
 
-        {/* render Navbar and pass formData to child   */}
+        {/* render  navbar component which handles user inputs and updates the fomrData  */}
         <Navbar
           onFormChange={(data) => {
             setFormData((prev) => ({ ...prev, ...data }));
@@ -36,16 +36,19 @@ const Home: React.FC = () => {
         />
         <div className="w-full mx-auto flex flex-col gap-3 mt-10  max-w-[1250px] px-6">
           <div className="flex-1">
+{/* Results component which renders the results data and displays key calculations based on user inputs*/}
             <Results formData={formData} />
-            ``
+          
           </div>
           <div className="flex-1 my-10 w-full md:w-[650] mx-auto md:h-[415px]">
+            {/* Battery degradation chart  */}
             <BatteryDegradationChart
               efficiency={formData.efficiency}
               degradationRate={formData.degradationRate}
               years={formData.years}
             />
           </div>
+           {/* Battery degradation table - displays numerical breakdown of EV wear for each year*/}
           <BatteryDegradationTable formData={formData} />
         </div>
       </div>

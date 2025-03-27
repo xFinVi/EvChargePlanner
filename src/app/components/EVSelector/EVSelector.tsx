@@ -5,56 +5,71 @@ import { FormInputs } from "@/app/Types/formSchema";
 import { EVTemplate } from "@/app/Types/formData";
 import { EV_TYPES } from "@/app/Constants/DBdata";
 
+//  props for EVSelector component
 interface EVSelectorProps {
-  form: UseFormReturn<FormInputs>;
+  form: UseFormReturn<FormInputs>; // The form prop is the form instance from react-hook-form
 }
 
 const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
+ 
   const [templates, setTemplates] = useState<EVTemplate[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Destructure form methods 
   const { register, watch, setValue } = form;
+
+  // Watch the 'evType' to see which EV type is selected
   const evType = watch("evType");
+
   useEffect(() => {
+    //  if 'evType' is selected and the template for this EV type isn't already loaded
     if (evType && !templates.find((t) => t.name === evType)) {
-      setLoading(true);
+      setLoading(true); //  loading  to true   
+
+      //fetch the template data for the EV type
       const fetchTemplate = async () => {
         try {
+          // API call to fetch the template data for the backend 
           const res = await fetch(`/api/templates/${evType}`);
-          if (!res.ok) setError(`Failed to fetch ${evType} data`);
+          if (!res.ok) setError(`Failed to fetch ${evType} data`); 
+
+          // parse JSON response into an EVTemplate
           const data: EVTemplate = await res.json();
+
+          // Add the fetched template to the templates array and update state
           setTemplates((prev) => [...prev, data]);
-          setValue("efficiency", data.efficiency);
-          setValue("batteryCapacity", data.batteryCapacity);
+
+          // Populate the form with the fetched data (efficiency and battery capacity)
+          setValue("efficiency", Number(data.efficiency));
+          setValue("batteryCapacity", Number(data.batteryCapacity));
         } catch (err) {
+         
           setError(`Failed to load ${evType} details, ${err}`);
         } finally {
-          setLoading(false);
+          setLoading(false); // Set loading to false after  fetch 
         }
       };
-      fetchTemplate();
+
+      fetchTemplate(); // Call fetchTemplate
     } else if (evType) {
-      // Use the already loaded template if it's available
+      // If the EV type is already in the templates array, use it to populate the form
       const existingTemplate = templates.find((t) => t.name === evType);
       if (existingTemplate) {
-        setValue("efficiency", existingTemplate.efficiency.toString());
-        setValue(
-          "batteryCapacity",
-          existingTemplate.batteryCapacity.toString()
-        );
+        setValue("efficiency", Number(existingTemplate.efficiency));
+        setValue("batteryCapacity", Number(existingTemplate.batteryCapacity));
       }
     }
-  }, [evType, templates, setValue]);
+  }, [evType, templates, setValue]); // Dependency array: rerun the effect when 'evType' or 'templates' change
 
   return (
     <div className="max-w-[185px] mx-auto mt-8 inline-block relative">
-      {/* <label htmlFor="evType" className="text-gray-500">
+      <label htmlFor="evType" className="text-gray-500">
         EV Type (Optional)
-      </label> */}
+      </label>
       <select
         id="evType"
-        className="block w-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border border-gray-400 rounded shadow appearance-none hover:border-gray-500 focus:outline-none focus:shadow-outline"
+        className="block w-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border border-gray-400 rounded shadow hover:border-gray-500 focus:outline-none focus:shadow-outline"
         {...register("evType")}
         disabled={loading}
       >
@@ -65,15 +80,7 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
           </option>
         ))}
       </select>
-      <div className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
-        <svg
-          className="w-4 h-4 fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-        </svg>
-      </div>
+     
 
       {loading && <p className="mt-2 text-gray-500">Loading details...</p>}
       {error && <p className="mt-2 text-red-500">{error}</p>}

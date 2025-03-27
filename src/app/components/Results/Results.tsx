@@ -6,7 +6,6 @@ import {
   calculateDailyUsage,
   calculateChargingTime,
   calculateTotalEnergyDemand,
-  isValidNumber,
 } from "@/app/utils/utils";
 import { ResultsProps } from "@/app/Types/formData";
 import { useMemo } from "react";
@@ -22,27 +21,32 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
   } = formData;
   // we extract the values passed from the form data and complete our calculations
 
-  const dailyEnergy = useMemo(() => {
-    return isValidNumber(dailyMileage) && isValidNumber(efficiency)
-      ? Number(calculateDailyUsage(dailyMileage, efficiency))
-      : 0;
-  }, [dailyMileage, efficiency]);
+  //using useMemo to memoise our values and only recalculate if any of our dependencies changing this way results are cached improving performance
 
+  const dailyEnergy = useMemo(() => {
+    if (!dailyMileage || !efficiency) {
+      return 0;
+    }
+    return calculateDailyUsage(dailyMileage, efficiency);
+  }, [dailyMileage, efficiency]); // Calculate daily energy
+
+/* calculate charging time required per vehicle */
   const chargingTime = useMemo(() => {
-    return isValidNumber(batteryCapacity) && isValidNumber(chargingPower)
-      ? Number(calculateChargingTime(batteryCapacity, chargingPower))
-      : 0;
+    if (!batteryCapacity || !chargingPower) {
+     return 0;
+    }
+    return  calculateChargingTime(batteryCapacity, chargingPower);
+    
   }, [batteryCapacity, chargingPower]);
 
-  const totalEnergy = useMemo(() => {
-    return isValidNumber(numberOfEvs) &&
-      isValidNumber(dailyMileage) &&
-      isValidNumber(efficiency)
-      ? Number(
-          calculateTotalEnergyDemand(numberOfEvs, dailyMileage, efficiency)
-        )
-      : 0;
-  }, [numberOfEvs, dailyMileage, efficiency]);
+
+  /* calculate total energy required for the whole fleet */
+const totalEnergy = useMemo(() => {
+  if (!numberOfEvs || !dailyMileage || !efficiency) {
+    return 0;
+  }
+  return calculateTotalEnergyDemand(numberOfEvs, dailyMileage, efficiency);
+}, [numberOfEvs, dailyMileage, efficiency]);
 
   const cost = useMemo(() => {
     return totalEnergy * tariff;
@@ -50,6 +54,7 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
 
   return (
     <div className="grid justify-center w-full grid-cols-1 gap-4 xs:grid-cols-2 sm:flex sm:flex-wrap justify-items-center">
+      {/* passing props to data components as well as the value of our calculations to be used for displaying purposes */}
       <Data
         icon={FaCar}
         title="Daily Energy per EV"

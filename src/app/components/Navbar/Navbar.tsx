@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
   const form = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      numberOfEvs: undefined,
+      numberOfEvs: undefined,  //defaultValues as undefined to allow empty inputs for UX purposes
       dailyMileage: undefined,
       batteryCapacity: undefined,
       chargingPower: undefined,
@@ -34,16 +34,19 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
 
   const { register, formState: { errors }, watch, reset } = form;
 
-  React.useEffect(() => {
-    const subscription = watch((value) => {
-      onFormChange?.(value); // Pass raw values, no conversion here
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, onFormChange]);
+// Watch is listening for changes in the form inputs in real time  and call onFormChange when values changes so it can updated {as an object}
+React.useEffect(() => {
+  const subscription = watch((value) => {
+    onFormChange?.(value); // call formChange parent function with latest form data  to update the state 
+  });
+
+  return () => subscription.unsubscribe(); // clean the effect on unmount
+}, [watch, onFormChange]);
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
       <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 max-w-[1150px]">
+        {/* passing props to input as well as using the props from react-hook-form to handleChangeEvents , we also convert the value to number as html inputs give you strings */}
         <Input
           label="Number of EVs"
           id="numberOfEvs"
