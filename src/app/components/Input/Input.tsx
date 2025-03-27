@@ -14,7 +14,7 @@ const Input: React.FC<InputProps> = ({ label, id, type, error, ...props }) => {
       <div className="relative">
         <label
           htmlFor={id}
-          className="block mb-2 font-bold tracking-wide text-gray-700 uppercase text-xxs md:text-xs"
+          className="block mb-2 font-bold tracking-wide text-gray-700 uppercase text-xxs lg:text-xs"
         >
           {label}
         </label>
