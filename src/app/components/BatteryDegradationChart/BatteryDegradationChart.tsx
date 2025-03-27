@@ -30,7 +30,7 @@ export default function BatteryDegradationChart({
 
   // Calculate y-axis data (efficiency over time)
   const efficiencyData = labels.map((_, year) => {
-    const remainingCapacity = Math.max(1 - degradationRate * year, 0); // degradationRate is 0.02, not 2
+    const remainingCapacity = Math.max(1 - (degradationRate / 100) * year, 0); 
     return efficiency * remainingCapacity;
   });
 

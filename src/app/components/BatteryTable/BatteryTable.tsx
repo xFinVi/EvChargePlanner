@@ -4,6 +4,7 @@ import { useMemo } from "react";
 
 import { toDecimalMark } from "@/app/utils/utils";
 import { NumericFormData } from "@/app/Types/formData";
+import BatteryMaintenanceTips from "@/app/EVTips/EVTips";
 
 interface BatteryDegradationTableProps {
   formData: NumericFormData;
@@ -53,13 +54,13 @@ export default function BatteryDegradationTable({
 
     return Array.from({ length: years + 1 }, (_, year) => {
       const remainingCapacity =
-        initialCapacity * Math.pow(1 - degradationRate, year);
-      const healthPercentage = (remainingCapacity / batteryCapacity) * 100;
-      const estimatedRange = remainingCapacity * efficiency;
-      const totalMileage = currentMileage + annualMileage * year;
+        initialCapacity * Math.pow(1 - (degradationRate / 100), year); // calculates the input of the user as a percentage so if the user adds 2 its considered a 2%
+      const healthPercentage = (remainingCapacity / batteryCapacity) * 100; // we take the remaining capacity and divided with the full battery capacity the user gave us and then we multiply by 100 to get the %
+      const estimatedRange = remainingCapacity * efficiency;  // remaining battery capacity at that time times the efficiency gives us the range of the battery in miles
+      const totalMileage = currentMileage + annualMileage * year; //calculates the total mileage for each year
       const needsReplacement =
         remainingCapacity < replacementThreshold ||
-        totalMileage > replacementMileageThreshold;
+        totalMileage > replacementMileageThreshold; // a conditional to give the user an estimation based on the mileage or the battery health if the battery needs replacement
 
       return {
         year,
@@ -133,7 +134,7 @@ export default function BatteryDegradationTable({
             const mileageColor =
               mileageNumber < 80000
                 ? "text-green-600"
-                : mileageNumber < 100000
+                : mileageNumber < 140000
                 ? "text-yellow-600"
                 : "text-red-600";
             const replaceColor = row.needsReplacement
@@ -141,9 +142,9 @@ export default function BatteryDegradationTable({
               : "text-green-600";
 
             const estimatedRangeColor =
-              row.estimatedRange >= 200
+              row.estimatedRange >= formData.dailyMileage
                 ? "text-green-600"
-                : row.estimatedRange >= 150
+                : row.estimatedRange <= formData.dailyMileage 
                 ? "text-yellow-600"
                 : "text-red-600";
 
@@ -185,6 +186,7 @@ export default function BatteryDegradationTable({
           })}
         </tbody>
       </table>
+      {degradationData.length > 0 && <BatteryMaintenanceTips />}
     </div>
   );
 }

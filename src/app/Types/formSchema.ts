@@ -1,104 +1,69 @@
 // formSchema.ts
 import { z } from "zod";
 
+/* Types schema for our inputs checking that our inputs are NUMBERS, WHOLE numbers and POSITIVE ,
+ also using the OPTIONAL in case a user wants to get specific analytics instead of the whole report */
+
 export const formSchema = z.object({
   numberOfEvs: z
-    .string()
-    .refine((val) => val === "" || Number.isInteger(Number(val)), {
-      message: "Must be a whole number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .int({ message: "Must be a whole number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 
   dailyMileage: z
-    .string()
-    .refine((val) => val === "" || Number.isInteger(Number(val)), {
-      message: "Must be a whole number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .int({ message: "Must be a whole number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 
   batteryCapacity: z
-    .string()
-    .refine((val) => val === "" || !isNaN(Number(val)), {
-      message: "Must be a number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 
   chargingPower: z
-    .string()
-    .refine((val) => val === "" || !isNaN(Number(val)), {
-      message: "Must be a number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 
   efficiency: z
-    .string()
-    .refine((val) => val === "" || !isNaN(Number(val)), {
-      message: "Must be a number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 
-  evType: z.string(),
+  evType: z.string().optional(), // Keep as string since it’s not numeric
 
   annualMileage: z
-    .string()
-    .refine((val) => val === "" || Number.isInteger(Number(val)), {
-      message: "Must be a whole number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .int({ message: "Must be a whole number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 
   currentMileage: z
-    .string()
-    .refine((val) => val === "" || Number.isInteger(Number(val)), {
-      message: "Must be a whole number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .int({ message: "Must be a whole number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 
   currentBatteryHealth: z
-    .string()
-    .refine((val) => val === "" || Number.isInteger(Number(val)), {
-      message: "Must be a whole number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    })
-    .refine((val) => val === "" || Number(val) <= 100, {
-      message: "Must be at most 100",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .int({ message: "Must be a whole number" })
+    .min(0, { message: "Must be at least 0" })
+    .max(100, { message: "Must be at most 100" })
+    .optional(),
 
   degradationRate: z
-    .string()
-    .refine((val) => val === "" || !isNaN(Number(val)), {
-      message: "Must be a number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    })
-    .refine((val) => val === "" || Number(val) <= 100, {
-      message: "Must be at most 100",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .min(0, { message: "Must be at least 0" })
+    .max(100, { message: "Must be at most 100" })
+    .optional(),
 
   years: z
-    .string()
-    .refine((val) => val === "" || Number.isInteger(Number(val)), {
-      message: "Must be a whole number",
-    })
-    .refine((val) => val === "" || Number(val) >= 0, {
-      message: "Must be at least 0",
-    }),
+    .number({ invalid_type_error: "Must be a number" })
+    .int({ message: "Must be a whole number" })
+    .min(0, { message: "Must be at least 0" })
+    .optional(),
 });
 
 export type FormInputs = z.infer<typeof formSchema>;

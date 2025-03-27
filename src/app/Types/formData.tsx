@@ -18,8 +18,7 @@ export interface NumericFormData {
   batteryCapacity: number;
   chargingPower: number;
   efficiency: number;
-  evType: string;
-  initialEfficiency?: number; // Optional, if still needed
+  evType: string; 
   degradationRate: number;
   years: number;
   currentMileage: number;

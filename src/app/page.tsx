@@ -17,7 +17,7 @@ const Home: React.FC = () => {
     currentMileage: 0,
     currentBatteryHealth: 100,
     evType: "",
-    degradationRate: 0.06,
+    degradationRate: 2,
     years: 10,
   });
 
@@ -27,6 +27,8 @@ const Home: React.FC = () => {
         <h1>EV Charge Planning Tool</h1>
       </div>
       <div className="mx-auto">
+
+        {/* render Navbar and pass formData to child   */}
         <Navbar
           onFormChange={(data) => {
             setFormData((prev) => ({ ...prev, ...data }));
