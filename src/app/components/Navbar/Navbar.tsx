@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
       evType: "",
       annualMileage: "",
       currentMileage: "",
-      degradationRate: "0.02",
+      degradationRate: "2",
       currentBatteryHealth: "100",
       years: "10",
     },
@@ -63,7 +63,9 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
             ? 0
             : Number(value.currentBatteryHealth),
         degradationRate:
-          value.degradationRate === "" ? 0 : Number(value.degradationRate),
+          value.degradationRate === ""
+            ? 0
+            : Number(value.degradationRate) / 100,
         years: value.years === "" ? 0 : Number(value.years),
       };
       onFormChange?.(numericValues); // Pass converted numbers

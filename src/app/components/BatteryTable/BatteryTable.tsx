@@ -1,11 +1,12 @@
 // src/app/components/BatteryDegradationTable/BatteryDegradationTable.tsx
 "use client";
 import { useMemo } from "react";
-import { FormInputs } from "@/app/Types/formSchema";
+
 import { toDecimalMark } from "@/app/utils/utils";
+import { NumericFormData } from "@/app/Types/formData";
 
 interface BatteryDegradationTableProps {
-  formData: FormInputs;
+  formData: NumericFormData;
 }
 
 export default function BatteryDegradationTable({
@@ -48,7 +49,7 @@ export default function BatteryDegradationTable({
 
     const initialCapacity = batteryCapacity * (currentBatteryHealth / 100);
     const replacementThreshold = batteryCapacity * 0.7; // 70% of battery threshold capacity to replace
-    const replacementMileageThreshold = 100_000;
+    const replacementMileageThreshold = 150_000;
 
     return Array.from({ length: years + 1 }, (_, year) => {
       const remainingCapacity =

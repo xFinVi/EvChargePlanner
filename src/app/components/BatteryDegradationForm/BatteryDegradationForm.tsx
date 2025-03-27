@@ -9,13 +9,13 @@ const BatteryDegradationForm: React.FC<BatteryDegradationFormProps> = ({
 }) => (
   <div className="grid grid-cols-3  gap-4 mt-8 sm:grid-cols-4 max-w-[650px] mx-auto w-full">
     <Input
-      label=" Rate (e.g., 0.02 = 2%)"
+      label=" Rate (%)"
       id="degradationRate"
       type="number"
-      step="0.01"
+      step="1"
       min="0"
       placeholder="Degradation Rate"
-      max="1"
+      max="100"
       {...register("degradationRate")}
       error={errors.degradationRate?.message}
     />

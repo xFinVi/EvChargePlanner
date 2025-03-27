@@ -86,6 +86,9 @@ export const formSchema = z.object({
     })
     .refine((val) => val === "" || Number(val) >= 0, {
       message: "Must be at least 0",
+    })
+    .refine((val) => val === "" || Number(val) <= 100, {
+      message: "Must be at most 100",
     }),
 
   years: z

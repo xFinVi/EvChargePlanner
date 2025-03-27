@@ -4,8 +4,8 @@ import { FormInputs } from "./formSchema";
 
 export interface EVTemplate {
   name: string;
-  efficiency: number; // Keep as number—used for predefined EV data
-  batteryCapacity: number;
+  efficiency: string; // Keep as number—used for predefined EV data
+  batteryCapacity: string;
 }
 
 // FormData matches FormInputs (strings)

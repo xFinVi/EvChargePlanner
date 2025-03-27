@@ -25,8 +25,8 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
           if (!res.ok) setError(`Failed to fetch ${evType} data`);
           const data: EVTemplate = await res.json();
           setTemplates((prev) => [...prev, data]);
-          setValue("efficiency", data.efficiency.toString());
-          setValue("batteryCapacity", data.batteryCapacity.toString());
+          setValue("efficiency", data.efficiency);
+          setValue("batteryCapacity", data.batteryCapacity);
         } catch (err) {
           setError(`Failed to load ${evType} details, ${err}`);
         } finally {

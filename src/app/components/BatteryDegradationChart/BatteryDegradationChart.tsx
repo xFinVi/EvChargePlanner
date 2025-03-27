@@ -25,18 +25,21 @@ export default function BatteryDegradationChart({
   degradationRate,
   years,
 }: BatteryDegradationChartProps) {
+  // Generate x-axis labels (years)
   const labels = Array.from({ length: years + 1 }, (_, i) => `Year ${i}`);
+
+  // Calculate y-axis data (efficiency over time)
   const efficiencyData = labels.map((_, year) => {
-    const remainingCapacity = 1 - degradationRate * year;
-    return efficiency * Math.max(remainingCapacity, 0);
+    const remainingCapacity = Math.max(1 - degradationRate * year, 0); // degradationRate is 0.02, not 2
+    return efficiency * remainingCapacity;
   });
 
   const data = {
-    labels,
+    labels, // X-axis: Years
     datasets: [
       {
-        label: "Efficiency (miles/kWh)",
-        data: efficiencyData,
+        label: "Efficiency (miles/kWh)", // Legend label
+        data: efficiencyData, // Y-axis data
         backgroundColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
@@ -50,22 +53,32 @@ export default function BatteryDegradationChart({
       legend: { position: "top" as const },
       title: {
         display: true,
-        text: "Battery Degradation Impact on EV Efficiency",
-        color: "#fff",
+        text: "Battery Degradation Impact on Efficiency",
+        color: "#333",
         font: { size: 16 },
       },
     },
     scales: {
-      x: { title: { display: true, text: "Years", color: "#333" } },
+      x: {
+        title: {
+          display: true,
+          text: "Years", // X-axis label
+          color: "#333",
+        },
+      },
       y: {
-        title: { display: true, text: "Efficiency (miles/kWh)", color: "#333" },
+        title: {
+          display: true,
+          text: "Efficiency (miles/kWh)", // Y-axis label
+          color: "#333",
+        },
         beginAtZero: true,
       },
     },
   };
 
   return (
-    <div className="w-full flex flex-1 h-[300px] md:h-[415px]  rounded-lg shadow-md">
+    <div className="w-full flex flex-1 h-[300px] md:h-[415px] rounded-lg shadow-md">
       <Bar data={data} options={options} />
     </div>
   );
