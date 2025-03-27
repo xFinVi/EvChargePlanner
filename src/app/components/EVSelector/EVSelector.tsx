@@ -25,9 +25,8 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
           if (!res.ok) setError(`Failed to fetch ${evType} data`);
           const data: EVTemplate = await res.json();
           setTemplates((prev) => [...prev, data]);
-          setValue("efficiency", data.efficiency);
-          setValue("batteryCapacity", data.batteryCapacity);
-          setValue("initialEfficiency", data.efficiency);
+          setValue("efficiency", data.efficiency.toString());
+          setValue("batteryCapacity", data.batteryCapacity.toString());
         } catch (err) {
           setError(`Failed to load ${evType} details, ${err}`);
         } finally {
@@ -39,9 +38,11 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
       // Use the already loaded template if it's available
       const existingTemplate = templates.find((t) => t.name === evType);
       if (existingTemplate) {
-        setValue("efficiency", existingTemplate.efficiency);
-        setValue("batteryCapacity", existingTemplate.batteryCapacity);
-        setValue("initialEfficiency", existingTemplate.efficiency);
+        setValue("efficiency", existingTemplate.efficiency.toString());
+        setValue(
+          "batteryCapacity",
+          existingTemplate.batteryCapacity.toString()
+        );
       }
     }
   }, [evType, templates, setValue]);
