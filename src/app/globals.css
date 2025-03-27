@@ -1,4 +1,21 @@
+/* app/globals.css */
 @import "tailwindcss";
+
+@theme {
+  --breakpoint-xs: 450px; /* Custom screen size */
+  --animation-fade-in: fadeIn 500ms ease-in forwards; /* Custom animation */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 :root {
   --background: #ffffff;
@@ -14,16 +31,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff;
+    --background: #ffffff; /* Note: You might want #171717 here for dark mode */
     --foreground: #ededed;
   }
 }
 
-@layer utilities {
-  .custom-xs-grid {
-    @apply grid-cols-2;
-  }
+@utility text-xxs {
+  font-size: 0.55rem;
 }
+
 body {
   background: var(--background);
   color: var(--foreground);

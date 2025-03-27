@@ -16,7 +16,7 @@ const Home: React.FC = () => {
     annualMileage: 0,
     currentMileage: 0,
     currentBatteryHealth: 100,
-    initialEfficiency: 4.0,
+    evType: "",
     degradationRate: 0.06,
     years: 10,
   });
@@ -32,13 +32,14 @@ const Home: React.FC = () => {
             setFormData((prev) => ({ ...prev, ...data }));
           }}
         />
-        <div className="w-full mx-auto flex flex-col gap-3 mt-10  max-w-[1150px] px-6">
+        <div className="w-full mx-auto flex flex-col gap-3 mt-10  max-w-[1250px] px-6">
           <div className="flex-1">
             <Results formData={formData} />
+            ``
           </div>
-          <div className="flex-1 w-full md:w-[650] mx-auto md:h-[415px]">
+          <div className="flex-1 my-10 w-full md:w-[650] mx-auto md:h-[415px]">
             <BatteryDegradationChart
-              initialEfficiency={formData.initialEfficiency}
+              efficiency={formData.efficiency}
               degradationRate={formData.degradationRate}
               years={formData.years}
             />

@@ -1,3 +1,5 @@
+// The results component is responsible for generating the results based on the form data.
+
 import { FaCar, FaBatteryFull, FaPlug, FaPoundSign } from "react-icons/fa";
 import Data from "../Data/Data";
 import {
@@ -9,6 +11,7 @@ import {
 import { ResultsProps } from "@/app/Types/formData";
 import { useMemo } from "react";
 
+// We pass the data from our form inputs and a default value for the electricity tariff
 export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
   const {
     numberOfEvs,
@@ -17,6 +20,7 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
     chargingPower,
     efficiency,
   } = formData;
+  // we extract the values passed from the form data and complete our calculations
 
   const dailyEnergy = useMemo(() => {
     return isValidNumber(dailyMileage) && isValidNumber(efficiency)
@@ -45,7 +49,7 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
   }, [totalEnergy, tariff]);
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:gap-8 lg:gap-18">
+    <div className="grid justify-center w-full grid-cols-1 gap-4 xs:grid-cols-2 sm:flex sm:flex-wrap justify-items-center">
       <Data
         icon={FaCar}
         title="Daily Energy per EV"

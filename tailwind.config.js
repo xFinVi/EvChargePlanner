@@ -2,6 +2,9 @@
 module.exports = {
   theme: {
     extend: {
+      screens: {
+        xs: "0px", // For all screens below 600px
+      },
       animation: {
         "fade-in": "fadeIn 500ms ease-in forwards",
       },

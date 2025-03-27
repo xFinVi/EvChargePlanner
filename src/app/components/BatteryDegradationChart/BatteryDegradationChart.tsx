@@ -21,14 +21,14 @@ ChartJS.register(
 );
 
 export default function BatteryDegradationChart({
-  initialEfficiency,
+  efficiency,
   degradationRate,
   years,
 }: BatteryDegradationChartProps) {
   const labels = Array.from({ length: years + 1 }, (_, i) => `Year ${i}`);
   const efficiencyData = labels.map((_, year) => {
     const remainingCapacity = 1 - degradationRate * year;
-    return initialEfficiency * Math.max(remainingCapacity, 0);
+    return efficiency * Math.max(remainingCapacity, 0);
   });
 
   const data = {
@@ -65,7 +65,7 @@ export default function BatteryDegradationChart({
   };
 
   return (
-    <div className="w-full h-[300px] md:h-[415px] p-4 m-auto rounded-lg shadow-md">
+    <div className="w-full flex flex-1 h-[300px] md:h-[415px]  rounded-lg shadow-md">
       <Bar data={data} options={options} />
     </div>
   );

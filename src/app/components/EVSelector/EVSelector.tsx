@@ -47,13 +47,13 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
   }, [evType, templates, setValue]);
 
   return (
-    <div className="max-w-[185px] mx-auto mt-8">
-      <label htmlFor="evType" className="text-gray-500">
+    <div className="max-w-[185px] mx-auto mt-8 inline-block relative">
+      {/* <label htmlFor="evType" className="text-gray-500">
         EV Type (Optional)
-      </label>
+      </label> */}
       <select
         id="evType"
-        className="block w-full p-2 mt-1 text-gray-700 rounded border-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="block w-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border border-gray-400 rounded shadow appearance-none hover:border-gray-500 focus:outline-none focus:shadow-outline"
         {...register("evType")}
         disabled={loading}
       >
@@ -64,6 +64,16 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
           </option>
         ))}
       </select>
+      <div className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
+        <svg
+          className="w-4 h-4 fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+        </svg>
+      </div>
+
       {loading && <p className="mt-2 text-gray-500">Loading details...</p>}
       {error && <p className="mt-2 text-red-500">{error}</p>}
     </div>

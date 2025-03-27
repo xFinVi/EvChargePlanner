@@ -1,21 +1,30 @@
+// formData.ts
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { FormInputs } from "./formSchema";
 
 export interface EVTemplate {
   name: string;
-  efficiency: number;
+  efficiency: number; // Keep as number—used for predefined EV data
   batteryCapacity: number;
 }
-export interface FormData {
-  numberOfEvs?: number;
-  dailyMileage?: number;
-  batteryCapacity?: number;
-  chargingPower?: number;
-  efficiency?: number;
-  evType?: string;
-  initialEfficiency?: number;
-  degradationRate?: number;
-  years?: number;
+
+// FormData matches FormInputs (strings)
+export type FormData = FormInputs;
+
+// Numeric version for calculations
+export interface NumericFormData {
+  numberOfEvs: number;
+  dailyMileage: number;
+  batteryCapacity: number;
+  chargingPower: number;
+  efficiency: number;
+  evType: string;
+  initialEfficiency?: number; // Optional, if still needed
+  degradationRate: number;
+  years: number;
+  currentMileage: number;
+  currentBatteryHealth: number;
+  annualMileage: number;
 }
 
 export interface DataProps {
@@ -27,7 +36,7 @@ export interface DataProps {
 }
 
 export interface BatteryDegradationChartProps {
-  initialEfficiency: number;
+  efficiency: number;
   degradationRate: number;
   years: number;
 }
