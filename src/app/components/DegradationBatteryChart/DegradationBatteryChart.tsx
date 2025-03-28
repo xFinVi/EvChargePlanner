@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { BatteryDegradationChartProps } from "@/app/Types/formData";
+import { useMemo } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -34,17 +35,19 @@ export default function DegradationBatteryChart({
   /* Array.from method creates an array from an object like array with a 'length' property in this case.
     The first argument (_) is unused (undefined), so we use '_' as a placeholder.
       The second argument (i) is the index, used to build the year labels. */
-  const efficiencyData = labels.map((_, year) => {
-    const remainingCapacity = Math.max(1 - (degradationRate / 100) * year, 0);
-    return efficiency * remainingCapacity;
-  }); //formula to calculate the remaining battery efficiency for each year
+  const efficiencyDataMemo = useMemo(() => {
+    return labels.map((_, year) => {
+      const remainingCapacity = Math.max(1 - (degradationRate / 100) * year, 0);
+      return efficiency * remainingCapacity;
+    }); //formula to calculate the remaining battery efficiency for each year
+  }, [degradationRate, efficiency, labels]);
 
   const data = {
     labels, // X-axis: Years
     datasets: [
       {
         label: "Efficiency (miles/kWh)", // Legend label
-        data: efficiencyData, // Y-axis data
+        data: efficiencyDataMemo, // Y-axis data
         backgroundColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
@@ -58,7 +61,7 @@ export default function DegradationBatteryChart({
       legend: { position: "top" as const },
       title: {
         display: true,
-        text: `${degradationRate}% Battery Degradation Impact on Efficiency (annually) `,
+        text: "Battery Degradation Impact on Efficiency",
         color: "#333",
         font: { size: 16 },
       },
