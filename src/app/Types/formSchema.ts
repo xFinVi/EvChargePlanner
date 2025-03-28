@@ -9,77 +9,66 @@ export const formSchema = z.object({
     .number({ invalid_type_error: "Must be a number" })
     .int({ message: "Must be a whole number" }) // make sure its a whole number
     .min(0, { message: "Must be at least 0" }) // minimun value
-    .optional()
-    .nullable(), // optional parameter
+    .optional(), // optional parameter
 
   dailyMileage: z
     .number({ invalid_type_error: "Must be a number" })
     .int({ message: "Must be a whole number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
 
   // to some parameters we accept decimal numbers
   batteryCapacity: z
     .number({ invalid_type_error: "Must be a number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
   electricityTariff: z
     .number({ invalid_type_error: "Must be a number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
 
   chargingPower: z
     .number({ invalid_type_error: "Must be a number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
 
   efficiency: z
     .number({ invalid_type_error: "Must be a number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
 
-  evType: z.string().optional().nullable(), // Keep as string since it’s not numeric
+  evType: z.string().optional(), // Keep as string since it’s not numeric
 
   annualMileage: z
     .number({ invalid_type_error: "Must be a number" })
     .int({ message: "Must be a whole number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
 
   currentMileage: z
     .number({ invalid_type_error: "Must be a number" })
     .int({ message: "Must be a whole number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
 
   currentBatteryHealth: z
     .number({ invalid_type_error: "Must be a number" })
     .int({ message: "Must be a whole number" })
     .min(0, { message: "Must be at least 0" })
     .max(100, { message: "Must be at most 100" })
-    .optional()
-    .nullable(),
+    .optional(),
 
   degradationRate: z
     .number({ invalid_type_error: "Must be a number" })
     .min(0, { message: "Must be at least 0" })
     .max(100, { message: "Must be at most 100" })
-    .optional()
-    .nullable(),
+    .optional(),
 
   years: z
     .number({ invalid_type_error: "Must be a number" })
     .int({ message: "Must be a whole number" })
     .min(0, { message: "Must be at least 0" })
-    .optional()
-    .nullable(),
+    .optional(),
 });
 
 export type FormInputs = z.infer<typeof formSchema>;
