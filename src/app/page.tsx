@@ -20,6 +20,7 @@ const Home: React.FC = () => {
     evType: "",
     degradationRate: 2,
     years: 10,
+    electricityTariff: 0.25,
   });
 
   return (

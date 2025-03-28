@@ -11,7 +11,7 @@ import { ResultsProps } from "@/app/Types/formData";
 import { useMemo } from "react";
 
 // We pass the data from our form inputs and a default value for the electricity tariff
-export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
+export default function Results({ formData }: ResultsProps) {
   const { numberOfEvs, dailyMileage, chargingPower, efficiency } = formData;
   // we extract the values passed from the form data and complete our calculations
 
@@ -47,8 +47,8 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
 
   /* calculating cost based on the tariff and total energy used */
   const cost = useMemo(() => {
-    return totalEnergy * tariff;
-  }, [totalEnergy, tariff]);
+    return totalEnergy * formData.electricityTariff;
+  }, [totalEnergy, formData.electricityTariff]);
 
   return (
     <div className="grid justify-center w-full grid-cols-1 gap-4 xs:grid-cols-2 sm:flex sm:flex-wrap justify-items-center">
@@ -79,7 +79,7 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
         title="Daily Electricity Cost"
         unit="£"
         value={cost}
-        description={`Daily cost at £${tariff}/kWh`}
+        description={`Daily cost at £${formData.electricityTariff}/kWh`}
       />
     </div>
   );

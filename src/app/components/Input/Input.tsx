@@ -24,6 +24,7 @@ const Input: React.FC<InputProps> = ({ label, id, type, error, ...props }) => {
             }`}
           {...props}
         />
+        {/* Show the value next to the range input */}
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>

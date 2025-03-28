@@ -56,6 +56,17 @@ const BatteryDegradationForm: React.FC<BatteryDegradationFormProps> = ({
       min="0"
       error={errors.annualMileage?.message}
     />
+    <Input
+      id="electricityTariff"
+      label="electricityTariff"
+      placeholder="Electricity tariff"
+      type="range"
+      min="0"
+      max="100"
+      step="1"
+      {...register("electricityTariff", { valueAsNumber: true })}
+      error={errors.electricityTariff?.message}
+    />
   </div>
 );
 

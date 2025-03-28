@@ -116,17 +116,17 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
           type="button"
           onClick={() =>
             reset({
-              numberOfEvs: undefined, //defaultValues as undefined to allow empty inputs for UX purposes
-              dailyMileage: undefined,
-              batteryCapacity: undefined,
-              chargingPower: undefined,
-              efficiency: undefined,
-              evType: undefined,
-              annualMileage: undefined,
-              currentMileage: undefined,
-              degradationRate: undefined,
-              currentBatteryHealth: undefined,
-              years: undefined,
+              numberOfEvs: null,
+              dailyMileage: null,
+              batteryCapacity: null,
+              chargingPower: null,
+              efficiency: null,
+              evType: null,
+              annualMileage: null,
+              currentMileage: null,
+              degradationRate: null,
+              currentBatteryHealth: null,
+              years: null,
             })
           }
           className="px-2 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700"

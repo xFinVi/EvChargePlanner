@@ -49,8 +49,9 @@ export interface ResultsProps {
     batteryCapacity: number;
     chargingPower: number;
     efficiency: number;
+    electricityTariff: number;
   };
-  tariff?: number; // electricity tariff
+  // electricity tariff
 }
 
 // Props for the Degradation Form component, connecting it with the react-hook-form for input handling.
