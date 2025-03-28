@@ -114,20 +114,24 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
       <div className="mt-4 text-center">
         <button
           type="button"
-          onClick={() =>
-            reset({
-              numberOfEvs: "",
-              dailyMileage: "",
-              batteryCapacity: "",
-              chargingPower: "",
-              efficiency: "",
-              evType: "",
-              annualMileage: "",
-              currentMileage: "",
-              degradationRate: "",
-              currentBatteryHealth: "",
-              years: "",
-            })
+          onClick={
+            () =>
+              reset({
+                numberOfEvs: 0, // Reset to default number (0)
+                dailyMileage: 0, // Reset to default number (0)
+                batteryCapacity: 0, // Reset to default number (0)
+                chargingPower: 0, // Reset to default number (0)
+                efficiency: 0, // Reset to default number (0)
+                evType: "", // Reset string field to empty string
+                annualMileage: 0, // Reset to default number (0)
+                currentMileage: 0, // Reset to default number (0)
+                degradationRate: 0, // Reset to default number (0)
+                currentBatteryHealth: 100, // Reset to default value (100)
+                years: 0, // Reset to default number (0)
+              })
+
+            // Safer than using 'any' but still flexible
+            // Use Partial<FormInputs> if you want it to be partially typed
           }
           className="px-2 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700"
         >
