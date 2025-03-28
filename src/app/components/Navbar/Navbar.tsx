@@ -9,26 +9,30 @@ import EVSelector from "../EVSelector/EVSelector";
 
 interface NavbarProps {
   onFormChange?: (data: Partial<FormInputs>) => void;
+  onReset?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
+const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
   const [showDegradation, setShowDegradation] = React.useState(false);
+
+  const defaultValues: FormInputs = {
+    numberOfEvs: 0,
+    dailyMileage: 0,
+    batteryCapacity: 0,
+    chargingPower: 0,
+    efficiency: 0,
+    evType: "",
+    annualMileage: 0,
+    currentMileage: 0,
+    degradationRate: 2,
+    currentBatteryHealth: 100,
+    years: 10,
+    electricityTariff: 0, // Match Home's initial value
+  };
 
   const form = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      numberOfEvs: undefined, //defaultValues as undefined to allow empty inputs for UX purposes
-      dailyMileage: undefined,
-      batteryCapacity: undefined,
-      chargingPower: undefined,
-      efficiency: undefined,
-      evType: "",
-      annualMileage: undefined,
-      currentMileage: undefined,
-      degradationRate: 2,
-      currentBatteryHealth: 100,
-      years: 10,
-    },
+    defaultValues,
     mode: "onChange",
   });
 
@@ -39,19 +43,22 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
     reset,
   } = form;
 
-  // Watch is listening for changes in the form inputs in real time  and call onFormChange when values changes so it can updated {as an object}
   React.useEffect(() => {
     const subscription = watch((value) => {
-      onFormChange?.(value); // call formChange parent function with latest form data  to update the state
+      onFormChange?.(value);
     });
-
-    return () => subscription.unsubscribe(); // clean the effect on unmount
+    return () => subscription.unsubscribe();
   }, [watch, onFormChange]);
+
+  // Handle reset
+  const handleReset = () => {
+    reset(defaultValues); // Reset form state in Navbar
+    onReset?.(); // Reset Home's state
+  };
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
       <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 max-w-[1150px]">
-        {/* passing props to input as well as using the props from react-hook-form to handleChangeEvents , we also convert the value to number as html inputs give you strings */}
         <Input
           label="Number of EVs"
           id="numberOfEvs"
@@ -107,32 +114,18 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
         }`}
       >
         {showDegradation && (
-          <BatteryDegradationForm register={register} errors={errors} />
+          <BatteryDegradationForm
+            register={register}
+            watch={watch}
+            errors={errors}
+          />
         )}
       </div>
       <EVSelector form={form} />
       <div className="mt-4 text-center">
         <button
           type="button"
-          onClick={
-            () =>
-              reset({
-                numberOfEvs: 0, // Reset to default number (0)
-                dailyMileage: 0, // Reset to default number (0)
-                batteryCapacity: 0, // Reset to default number (0)
-                chargingPower: 0, // Reset to default number (0)
-                efficiency: 0, // Reset to default number (0)
-                evType: "", // Reset string field to empty string
-                annualMileage: 0, // Reset to default number (0)
-                currentMileage: 0, // Reset to default number (0)
-                degradationRate: 0, // Reset to default number (0)
-                currentBatteryHealth: 100, // Reset to default value (100)
-                years: 0, // Reset to default number (0)
-              })
-
-            // Safer than using 'any' but still flexible
-            // Use Partial<FormInputs> if you want it to be partially typed
-          }
+          onClick={handleReset} // Use synchronized reset handler
           className="px-2 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700"
         >
           Clear All

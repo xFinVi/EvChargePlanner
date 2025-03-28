@@ -13,6 +13,7 @@ import { useMemo } from "react";
 // We pass the data from our form inputs and a default value for the electricity tariff
 export default function Results({ formData }: ResultsProps) {
   const { numberOfEvs, dailyMileage, chargingPower, efficiency } = formData;
+
   // we extract the values passed from the form data and complete our calculations
 
   //using useMemo to memoise our values and only recalculate if any of our dependencies changing this way results are cached improving performance
@@ -21,6 +22,7 @@ export default function Results({ formData }: ResultsProps) {
   
   used the || operator to check if ONE of the required numbers is missing to not perform calculations, we need both
   */
+
   const dailyEnergy = useMemo(() => {
     if (!dailyMileage || !efficiency) {
       return 0;

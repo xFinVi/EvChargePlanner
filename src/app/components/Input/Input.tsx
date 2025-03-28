@@ -1,8 +1,15 @@
 import { InputProps } from "@/app/Types/formData";
 import React from "react";
 
-const Input: React.FC<InputProps> = ({ label, id, type, error, ...props }) => {
-  /* Accepting props from the parent components amd displaying the data as well as handling errors and  change events in our inputs  */
+const Input: React.FC<InputProps> = ({
+  label,
+  id,
+  type,
+  error,
+  className,
+  children,
+  ...props
+}) => {
   return (
     <div className="w-full sm:max-w-[200px] min-w-[100px]">
       <div className="relative">
@@ -21,10 +28,16 @@ const Input: React.FC<InputProps> = ({ label, id, type, error, ...props }) => {
               error
                 ? "border-red-500"
                 : "border-gray-500 focus:border-green-500"
-            }`}
+            } ${className || ""}`}
           {...props}
         />
-        {/* Show the value next to the range input */}
+        {children}
+        {type === "range" && (
+          <div className="flex justify-between mt-1">
+            <span className="text-sm text-gray-600"></span>
+            <span className="text-sm text-gray-600"></span>
+          </div>
+        )}
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>

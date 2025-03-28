@@ -1,5 +1,5 @@
 // formData.ts
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { FormInputs } from "./formSchema";
 
 // template for EV-specific data fetched from an API
@@ -57,7 +57,8 @@ export interface ResultsProps {
 // Props for the Degradation Form component, connecting it with the react-hook-form for input handling.
 export interface BatteryDegradationFormProps {
   register: UseFormRegister<FormInputs>; // Registers form inputs for validation and state .
-  errors: FieldErrors<FormInputs>; // Validation errors  by field name.
+  errors: FieldErrors<FormInputs>;
+  watch: UseFormWatch<FormInputs>;
 }
 
 // props for the reusable Input component.
@@ -65,6 +66,7 @@ export interface InputProps {
   label: string; // Text label   ("Daily Mileage").
   id: string; // Unique id for the input, used for the "for" attribute to be linked with the labels.
   type: string; //  input type ( "number", "text"), to control inputs behaviours .
-  error?: string; // Optional error message .
+  error?: string;
+  children?: React.ReactNode; // Optional error message .
   [key: string]: unknown; // Allows additional  attributes or react-hook-form props .
 }

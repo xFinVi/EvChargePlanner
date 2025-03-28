@@ -25,6 +25,7 @@ export const formSchema = z.object({
   electricityTariff: z
     .number({ invalid_type_error: "Must be a number" })
     .min(0, { message: "Must be at least 0" })
+    .max(2)
     .optional(),
 
   chargingPower: z
