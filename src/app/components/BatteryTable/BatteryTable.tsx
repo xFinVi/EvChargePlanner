@@ -14,13 +14,13 @@ export default function BatteryDegradationTable({
   formData,
 }: BatteryDegradationTableProps) {
   // extracting the data from the form to complete our calculations
-  const batteryCapacity = formData.batteryCapacity || 0;
-  const currentBatteryHealth = formData.currentBatteryHealth || 100;
-  const degradationRate = formData.degradationRate || 0;
-  const efficiency = formData.efficiency || 0;
-  const annualMileage = formData.annualMileage || 0;
-  const currentMileage = formData.currentMileage || 0;
-  const years = formData.years || 0;
+  const batteryCapacity = formData.batteryCapacity;
+  const currentBatteryHealth = formData.currentBatteryHealth;
+  const degradationRate = formData.degradationRate;
+  const efficiency = formData.efficiency;
+  const annualMileage = formData.annualMileage;
+  const currentMileage = formData.currentMileage;
+  const years = formData.years;
 
   //  checking if all required data is present and valid
   // Using useMemo to recompute only when dependencies change, to avoid re-renders and optimise performance

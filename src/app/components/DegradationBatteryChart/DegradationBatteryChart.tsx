@@ -65,6 +65,10 @@ export default function DegradationBatteryChart({
         color: "#333",
         font: { size: 16 },
       },
+      datalabels: {
+        // General options for all datasets
+        display: true, // Make sure data labels are shown
+      },
     },
     scales: {
       x: {

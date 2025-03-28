@@ -12,13 +12,7 @@ import { useMemo } from "react";
 
 // We pass the data from our form inputs and a default value for the electricity tariff
 export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
-  const {
-    numberOfEvs,
-    dailyMileage,
-    batteryCapacity,
-    chargingPower,
-    efficiency,
-  } = formData;
+  const { numberOfEvs, dailyMileage, chargingPower, efficiency } = formData;
   // we extract the values passed from the form data and complete our calculations
 
   //using useMemo to memoise our values and only recalculate if any of our dependencies changing this way results are cached improving performance
@@ -34,13 +28,14 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
     return calculateDailyUsage(dailyMileage, efficiency);
   }, [dailyMileage, efficiency]); // Calculate daily energy
 
-  /* calculate charging time required per vehicle */
+  /* calculate charging time required per vehicle, dividing the daily energy usage by charging power */
+
   const chargingTime = useMemo(() => {
-    if (!batteryCapacity || !chargingPower) {
+    if (!dailyMileage || !efficiency || !chargingPower) {
       return 0;
     }
-    return calculateChargingTime(batteryCapacity, chargingPower);
-  }, [batteryCapacity, chargingPower]);
+    return calculateChargingTime(dailyMileage, efficiency, chargingPower);
+  }, [dailyMileage, efficiency, chargingPower]);
 
   /* calculate total energy required for the whole fleet */
   const totalEnergy = useMemo(() => {

@@ -4,10 +4,14 @@ export const calculateDailyUsage = (
 ): number => dailyMileage / efficiency;
 
 export const calculateChargingTime = (
-  batteryCapacity: number,
+  dailyMileage: number,
+  efficiency: number,
   chargingPower: number
-): number => batteryCapacity / chargingPower;
+): number => {
+  if (!dailyMileage || !efficiency || !chargingPower) return 0;
 
+  return calculateDailyUsage(dailyMileage, efficiency) / chargingPower;
+};
 export const calculateTotalEnergyDemand = (
   numberOfEvs: number,
   dailyMileage: number,
@@ -16,8 +20,6 @@ export const calculateTotalEnergyDemand = (
 
 export const toDecimalMark = (num: number): string =>
   num.toLocaleString("en-GB");
-
-
 
 //   Daily Energy Consumption per EV – how would you calculate this?
 // • Charging Time Required per Vehicle – how would you calculate this?

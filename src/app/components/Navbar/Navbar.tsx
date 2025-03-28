@@ -114,7 +114,21 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
       <div className="mt-4 text-center">
         <button
           type="button"
-          onClick={() => reset()}
+          onClick={() =>
+            reset({
+              numberOfEvs: "", //defaultValues as undefined to allow empty inputs for UX purposes
+              dailyMileage: "",
+              batteryCapacity: "",
+              chargingPower: "",
+              efficiency: "",
+              evType: "",
+              annualMileage: "",
+              currentMileage: "",
+              degradationRate: "",
+              currentBatteryHealth: "",
+              years: "",
+            })
+          }
           className="px-2 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700"
         >
           Clear All
