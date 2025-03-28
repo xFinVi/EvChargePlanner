@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
   const form = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      numberOfEvs: undefined,  //defaultValues as undefined to allow empty inputs for UX purposes
+      numberOfEvs: undefined, //defaultValues as undefined to allow empty inputs for UX purposes
       dailyMileage: undefined,
       batteryCapacity: undefined,
       chargingPower: undefined,
@@ -25,23 +25,28 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
       evType: "",
       annualMileage: undefined,
       currentMileage: undefined,
-      degradationRate: 2, 
+      degradationRate: 2,
       currentBatteryHealth: 100,
       years: 10,
     },
     mode: "onChange",
   });
 
-  const { register, formState: { errors }, watch, reset } = form;
+  const {
+    register,
+    formState: { errors },
+    watch,
+    reset,
+  } = form;
 
-// Watch is listening for changes in the form inputs in real time  and call onFormChange when values changes so it can updated {as an object}
-React.useEffect(() => {
-  const subscription = watch((value) => {
-    onFormChange?.(value); // call formChange parent function with latest form data  to update the state 
-  });
+  // Watch is listening for changes in the form inputs in real time  and call onFormChange when values changes so it can updated {as an object}
+  React.useEffect(() => {
+    const subscription = watch((value) => {
+      onFormChange?.(value); // call formChange parent function with latest form data  to update the state
+    });
 
-  return () => subscription.unsubscribe(); // clean the effect on unmount
-}, [watch, onFormChange]);
+    return () => subscription.unsubscribe(); // clean the effect on unmount
+  }, [watch, onFormChange]);
 
   return (
     <div className="flex flex-col items-center justify-center p-4">

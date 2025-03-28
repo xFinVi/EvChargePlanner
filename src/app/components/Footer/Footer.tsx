@@ -1,5 +1,5 @@
 import React from "react";
-
+// footer
 const Footer: React.FC = () => {
   return (
     <footer className="mt-8 flex gap-[24px]  items-center justify-center  text-gray-300 py-6 ">

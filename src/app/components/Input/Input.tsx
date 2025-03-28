@@ -1,14 +1,8 @@
+import { InputProps } from "@/app/Types/formData";
 import React from "react";
 
-interface InputProps {
-  label: string;
-  id: string;
-  type: string;
-  error?: string;
-  [key: string]: unknown; // To allow for any other props as key:value pair
-}
-
 const Input: React.FC<InputProps> = ({ label, id, type, error, ...props }) => {
+  /* Accepting props from the parent components amd displaying the data as well as handling errors and  change events in our inputs  */
   return (
     <div className="w-full sm:max-w-[200px] min-w-[100px]">
       <div className="relative">

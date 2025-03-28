@@ -23,6 +23,10 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
 
   //using useMemo to memoise our values and only recalculate if any of our dependencies changing this way results are cached improving performance
 
+  /*  conditional calculation functions checking if we have the required numbers before moving to actual calculate 
+  
+  used the || operator to check if ONE of the required numbers is missing to not perform calculations, we need both
+  */
   const dailyEnergy = useMemo(() => {
     if (!dailyMileage || !efficiency) {
       return 0;
@@ -30,24 +34,23 @@ export default function Results({ formData, tariff = 0.25 }: ResultsProps) {
     return calculateDailyUsage(dailyMileage, efficiency);
   }, [dailyMileage, efficiency]); // Calculate daily energy
 
-/* calculate charging time required per vehicle */
+  /* calculate charging time required per vehicle */
   const chargingTime = useMemo(() => {
     if (!batteryCapacity || !chargingPower) {
-     return 0;
+      return 0;
     }
-    return  calculateChargingTime(batteryCapacity, chargingPower);
-    
+    return calculateChargingTime(batteryCapacity, chargingPower);
   }, [batteryCapacity, chargingPower]);
 
-
   /* calculate total energy required for the whole fleet */
-const totalEnergy = useMemo(() => {
-  if (!numberOfEvs || !dailyMileage || !efficiency) {
-    return 0;
-  }
-  return calculateTotalEnergyDemand(numberOfEvs, dailyMileage, efficiency);
-}, [numberOfEvs, dailyMileage, efficiency]);
+  const totalEnergy = useMemo(() => {
+    if (!numberOfEvs || !dailyMileage || !efficiency) {
+      return 0;
+    }
+    return calculateTotalEnergyDemand(numberOfEvs, dailyMileage, efficiency);
+  }, [numberOfEvs, dailyMileage, efficiency]);
 
+  /* calculating cost based on the tariff and total energy used */
   const cost = useMemo(() => {
     return totalEnergy * tariff;
   }, [totalEnergy, tariff]);

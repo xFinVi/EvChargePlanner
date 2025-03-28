@@ -11,12 +11,11 @@ interface EVSelectorProps {
 }
 
 const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
- 
   const [templates, setTemplates] = useState<EVTemplate[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Destructure form methods 
+  // Destructure form methods
   const { register, watch, setValue } = form;
 
   // Watch the 'evType' to see which EV type is selected
@@ -25,14 +24,14 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
   useEffect(() => {
     //  if 'evType' is selected and the template for this EV type isn't already loaded
     if (evType && !templates.find((t) => t.name === evType)) {
-      setLoading(true); //  loading  to true   
+      setLoading(true); //  loading  to true
 
       //fetch the template data for the EV type
       const fetchTemplate = async () => {
         try {
-          // API call to fetch the template data for the backend 
+          // API call to fetch the template data for the backend
           const res = await fetch(`/api/templates/${evType}`);
-          if (!res.ok) setError(`Failed to fetch ${evType} data`); 
+          if (!res.ok) setError(`Failed to fetch ${evType} data`);
 
           // parse JSON response into an EVTemplate
           const data: EVTemplate = await res.json();
@@ -44,10 +43,9 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
           setValue("efficiency", Number(data.efficiency));
           setValue("batteryCapacity", Number(data.batteryCapacity));
         } catch (err) {
-         
           setError(`Failed to load ${evType} details, ${err}`);
         } finally {
-          setLoading(false); // Set loading to false after  fetch 
+          setLoading(false); // Set loading to false after  fetch
         }
       };
 
@@ -80,7 +78,6 @@ const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
           </option>
         ))}
       </select>
-     
 
       {loading && <p className="mt-2 text-gray-500">Loading details...</p>}
       {error && <p className="mt-2 text-red-500">{error}</p>}

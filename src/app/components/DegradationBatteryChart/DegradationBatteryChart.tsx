@@ -20,22 +20,22 @@ ChartJS.register(
   Legend
 );
 
-export default function BatteryDegradationChart({
+export default function DegradationBatteryChart({
   efficiency,
   degradationRate,
   years,
 }: BatteryDegradationChartProps) {
   // Generate x-axis labels (years)
- // Generate x-axis labels for chart ('Year 0', 'Year 1', ...)
-const labels = Array.from(
-  { length: years + 1 }, // Define array length as years + 1 to include Year 0 through Year N
-  (_, i) => `Year ${i}`  // Map each index 'i' to a string label like 'Year 0'
-);
-/* Array.from method creates an array from an object like array with a 'length' property in this case.
+  // Generate x-axis labels for chart ('Year 0', 'Year 1', ...)
+  const labels = Array.from(
+    { length: years + 1 }, // Define array length as years + 1 to include Year 0 through Year N
+    (_, i) => `Year ${i}` // Map each index 'i' to a string label like 'Year 0'
+  );
+  /* Array.from method creates an array from an object like array with a 'length' property in this case.
     The first argument (_) is unused (undefined), so we use '_' as a placeholder.
       The second argument (i) is the index, used to build the year labels. */
   const efficiencyData = labels.map((_, year) => {
-    const remainingCapacity = Math.max(1 - (degradationRate / 100) * year, 0); 
+    const remainingCapacity = Math.max(1 - (degradationRate / 100) * year, 0);
     return efficiency * remainingCapacity;
   }); //formula to calculate the remaining battery efficiency for each year
 
@@ -50,7 +50,7 @@ const labels = Array.from(
       },
     ],
   };
-/* Configurable options for the chart */
+  /* Configurable options for the chart */
   const options = {
     responsive: true,
     maintainAspectRatio: false,

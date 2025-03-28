@@ -22,33 +22,32 @@ export default function BatteryDegradationTable({
   const currentMileage = formData.currentMileage || 0;
   const years = formData.years || 0;
 
- //  checking if all required data is present and valid
-// Using useMemo to recompute only when dependencies change, to avoid re-renders and optimise performance
-const isDataComplete = useMemo(() => {
-  return (
-    batteryCapacity > 0 &&
-    degradationRate > 0 &&
-    efficiency > 0 &&
-    annualMileage > 0 &&
-    currentMileage >= 0 && // Allow 0 for currentMileage in case we have a new vehicle
-    years > 0 &&
-    currentBatteryHealth > 0
-  );
-}, [
-  batteryCapacity,
-  degradationRate,
-  efficiency,
-  annualMileage,
-  currentMileage,
-  years,
-  currentBatteryHealth,
-]);
+  //  checking if all required data is present and valid
+  // Using useMemo to recompute only when dependencies change, to avoid re-renders and optimise performance
+  const isDataComplete = useMemo(() => {
+    return (
+      batteryCapacity > 0 &&
+      degradationRate > 0 &&
+      efficiency > 0 &&
+      annualMileage > 0 &&
+      currentMileage >= 0 && // Allow 0 for currentMileage in case we have a new vehicle
+      years > 0 &&
+      currentBatteryHealth > 0
+    );
+  }, [
+    batteryCapacity,
+    degradationRate,
+    efficiency,
+    annualMileage,
+    currentMileage,
+    years,
+    currentBatteryHealth,
+  ]);
 
-
-// useMemo memoizes the result of the function, re calculating it only when one of the dependencies changes.
-//  This prevents unnecessary recalculations
-//  The dependencies array includes all variables that we are watching .
-// - If any of these dependencies change, useMemo will recompute our variable, otherwise, it returns the cached value.
+  // useMemo memoizes the result of the function, re calculating it only when one of the dependencies changes.
+  //  This prevents unnecessary recalculations
+  //  The dependencies array includes all variables that we are watching .
+  // - If any of these dependencies change, useMemo will recompute our variable, otherwise, it returns the cached value.
 
   const degradationData = useMemo(() => {
     if (!isDataComplete) return [];
@@ -56,12 +55,12 @@ const isDataComplete = useMemo(() => {
     const initialCapacity = batteryCapacity * (currentBatteryHealth / 100);
     const replacementThreshold = batteryCapacity * 0.7; // 70% of battery threshold capacity to replace
     const replacementMileageThreshold = 150_000;
- // create an array of all degrdation data for each year
+    // create an array of all degrdation data for each year
     return Array.from({ length: years + 1 }, (_, year) => {
       const remainingCapacity =
-        initialCapacity * Math.pow(1 - (degradationRate / 100), year); // calculates the input of the user as a percentage so if the user adds 2 its considered a 2%
+        initialCapacity * Math.pow(1 - degradationRate / 100, year); // calculates the input of the user as a percentage so if the user adds 2 its considered a 2%
       const healthPercentage = (remainingCapacity / batteryCapacity) * 100; // we take the remaining capacity and divided with the full battery capacity the user gave us and then we multiply by 100 to get the %
-      const estimatedRange = remainingCapacity * efficiency;  // remaining battery capacity at that time times the efficiency gives us the range of the battery in miles
+      const estimatedRange = remainingCapacity * efficiency; // remaining battery capacity at that time times the efficiency gives us the range of the battery in miles
       const totalMileage = currentMileage + annualMileage * year; //calculates the total mileage for each year
       const needsReplacement =
         remainingCapacity < replacementThreshold ||
@@ -95,7 +94,8 @@ const isDataComplete = useMemo(() => {
           Battery Degradation Estimate
         </h2>
         <p className="mt-4 text-center text-gray-500">
-          Please enter all required fields to see the degradation estimate.
+          Please enter all required fields by clicking the Battery Degradation
+          button to see the degradation estimate.
         </p>
       </div>
     );
@@ -110,8 +110,8 @@ const isDataComplete = useMemo(() => {
       {formData.degradationRate && (
         <p className="text-center text-gray-500">
           {" "}
-          An estimate based on a {formData.degradationRate}%
-          battery degradation rate per year.
+          An estimate based on a {formData.degradationRate}% battery degradation
+          rate per year.
         </p>
       )}
       <table className="w-full mt-4 text-xs bg-gray-50 sm:text-sm">
@@ -129,14 +129,14 @@ const isDataComplete = useMemo(() => {
           {degradationData.map((row) => {
             // converting the string to a number and 'removing' special characters to make comparison
             const mileageNumber = Number(row.totalMileage.replace(/,/g, ""));
-  //  conditional classes to display numbers in differnt colors
+            //  conditional classes to display numbers in differnt colors
             const healthColor =
               row.healthPercentage >= 80
                 ? "text-green-600"
                 : row.healthPercentage >= 65
                 ? "text-yellow-600"
                 : "text-red-600";
-               
+
             const mileageColor =
               mileageNumber < 80000
                 ? "text-green-600"
@@ -150,12 +150,11 @@ const isDataComplete = useMemo(() => {
             const estimatedRangeColor =
               row.estimatedRange >= formData.dailyMileage
                 ? "text-green-600"
-                : row.estimatedRange <= formData.dailyMileage 
+                : row.estimatedRange <= formData.dailyMileage
                 ? "text-yellow-600"
                 : "text-red-600";
 
             return (
-
               /* MAPPING THROGUH ARA DATA AND DISPLAYING THEM IN A TABLE FORMAT */
               <tr
                 key={row.year}

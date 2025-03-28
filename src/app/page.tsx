@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Results from "./components/Results/Results";
-import BatteryDegradationChart from "./components/BatteryDegradationChart/BatteryDegradationChart";
+
 import Footer from "./components/Footer/Footer";
 import BatteryDegradationTable from "./components/BatteryTable/BatteryTable";
+import DegradationBatteryChart from "./components/DegradationBatteryChart/DegradationBatteryChart";
 
 const Home: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +28,6 @@ const Home: React.FC = () => {
         <h1>EV Charge Planning Tool</h1>
       </div>
       <div className="mx-auto">
-
         {/* render  navbar component which handles user inputs and updates the fomrData  */}
         <Navbar
           onFormChange={(data) => {
@@ -36,19 +36,18 @@ const Home: React.FC = () => {
         />
         <div className="w-full mx-auto flex flex-col gap-3 mt-10  max-w-[1250px] px-6">
           <div className="flex-1">
-{/* Results component which renders the results data and displays key calculations based on user inputs*/}
+            {/* Results component which renders the results data and displays key calculations based on user inputs*/}
             <Results formData={formData} />
-          
           </div>
           <div className="flex-1 my-10 w-full md:w-[650] mx-auto md:h-[415px]">
             {/* Battery degradation chart  */}
-            <BatteryDegradationChart
+            <DegradationBatteryChart
               efficiency={formData.efficiency}
               degradationRate={formData.degradationRate}
               years={formData.years}
             />
           </div>
-           {/* Battery degradation table - displays numerical breakdown of EV wear for each year*/}
+          {/* Battery degradation table - displays numerical breakdown of EV wear for each year*/}
           <BatteryDegradationTable formData={formData} />
         </div>
       </div>
