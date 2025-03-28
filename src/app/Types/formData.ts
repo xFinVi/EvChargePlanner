@@ -9,9 +9,6 @@ export interface EVTemplate {
   batteryCapacity: number;
 }
 
-// Alias for the  form inputs , matching the number-based schema from formSchema.ts.
-export type FormData = FormInputs;
-
 //  nubmers form data used for calculations .
 export interface NumericFormData {
   numberOfEvs: number; // number of electric vehicles.
