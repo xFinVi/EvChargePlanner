@@ -57,7 +57,10 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <div
+      className="flex flex-col items-center justify-center p-4"
+      id="battery-degradation-btn"
+    >
       <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 max-w-[1150px]">
         <Input
           label="Number of EVs"

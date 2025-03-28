@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { toDecimalMark } from "@/app/utils/utils";
 import { NumericFormData } from "@/app/Types/formData";
 import BatteryMaintenanceTips from "@/app/EVTips/EVTips";
+import Link from "next/link";
 
 interface BatteryDegradationTableProps {
   formData: NumericFormData;
@@ -92,9 +93,15 @@ export default function BatteryDegradationTable({
       <div className="mt-8">
         <h2 className="text-xl font-bold text-center text-gray-700">
           Battery Degradation Estimate
-        </h2>
+        </h2>{" "}
         <p className="mt-4 text-center text-gray-500">
-          Please enter all required fields by clicking the Battery Degradation
+          Please enter all required fields by clicking the{" "}
+          <Link
+            className="px-2 py-1 font-bold text-white bg-green-700 rounded-lg text-md border-1"
+            href="#battery-degradation-btn"
+          >
+            Battery Degradation
+          </Link>{" "}
           button to see the degradation estimate.
         </p>
       </div>
