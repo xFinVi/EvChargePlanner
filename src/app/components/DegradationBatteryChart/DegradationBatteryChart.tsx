@@ -58,7 +58,7 @@ export default function DegradationBatteryChart({
       legend: { position: "top" as const },
       title: {
         display: true,
-        text: `${degradationRate}% Battery Degradation Impact on Efficiency (annually) `,
+         text: "Battery Degradation Impact on Efficiency",
         color: "#333",
         font: { size: 16 },
       },
