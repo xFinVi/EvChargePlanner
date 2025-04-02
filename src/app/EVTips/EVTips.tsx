@@ -1,5 +1,7 @@
 import React from "react";
 
+/* simple EV component providing some helpful Tips for the EV market */
+
 const BatteryMaintenanceTips = () => (
   <div className="p-6 mt-8 text-sm rounded-md">
     <h3 className="mb-4 text-xl font-semibold text-center text-gray-700">

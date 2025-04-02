@@ -1,6 +1,8 @@
 import { InputProps } from "@/app/Types/formData";
 import React from "react";
 
+/* input component using the props passed from parent component to display data and use them for input functionality and logic */
+
 const Input: React.FC<InputProps> = ({
   label,
   id,

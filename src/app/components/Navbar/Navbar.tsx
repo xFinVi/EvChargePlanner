@@ -62,6 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
       id="battery-degradation-btn"
     >
       <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 max-w-[1150px]">
+        {/* input component takes props to be rendereed on screen */}
         <Input
           label="Number of EVs"
           id="numberOfEvs"
@@ -100,17 +101,33 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
         />
       </div>
       <div className="flex justify-center mt-4">
+        {/* button that shows and hides on click the degradation form */}
         <button
-          className={`px-2.5 py-1.5 text-sm font-bold rounded-md ${
-            showDegradation
-              ? "bg-amber-300 hover:bg-amber-400 text-gray-800"
-              : "bg-green-700 hover:bg-gray-700 text-white"
-          }`}
+          className={`px-2.5 py-1.5 text-sm font-bold rounded-md 
+      transition-transform duration-150 ease-in-out 
+      ${
+        showDegradation
+          ? "bg-amber-300 hover:bg-amber-400 text-gray-800 hover:scale-105 active:scale-105"
+          : "bg-[#4BC0C0] hover:bg-[#82d9d9] text-white hover:scale-105 active:scale-105"
+      }`}
           onClick={() => setShowDegradation(!showDegradation)}
         >
           {showDegradation ? "Hide" : "Show"} Battery Degradation
         </button>
       </div>
+
+      <div
+        className={`transition-opacity duration-300 ${
+          !showDegradation ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <p className="mt-4 text-sm font-medium text-center text-gray-400">
+          For more detailed insights, please add your Battery Degradation data.
+        </p>
+      </div>
+
+      {/* Degradation form */}
+
       <div
         className={`transition-opacity duration-300 ${
           showDegradation ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -124,6 +141,8 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
           />
         )}
       </div>
+
+      {/* EV PRESETS for sample data */}
       <EVSelector form={form} />
       <div className="mt-4 text-center">
         <button

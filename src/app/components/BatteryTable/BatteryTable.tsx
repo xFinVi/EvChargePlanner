@@ -96,13 +96,11 @@ export default function BatteryDegradationTable({
         </h2>{" "}
         <p className="mt-4 text-center text-gray-500">
           Please enter all required fields by clicking the{" "}
-          <Link
-            className="px-2 py-1 font-bold text-white bg-green-700 rounded-lg text-md border-1"
-            href="#battery-degradation-btn"
-          >
+          <span className="inline-block mx-1 text-lg font-bold text-[#82d9d9] underline transition-transform duration-150 ease-in-out rounded-lg hover:scale-105 active:scale-105">
             Battery Degradation
-          </Link>{" "}
-          button to see the degradation estimate.
+          </span>
+          button <span className="text-lg font-bold">above</span> to see the
+          degradation estimate.
         </p>
       </div>
     );
@@ -162,7 +160,8 @@ export default function BatteryDegradationTable({
                 : "text-red-600";
 
             return (
-              /* MAPPING THROGUH ARA DATA AND DISPLAYING THEM IN A TABLE FORMAT */
+              /* MAPPING the input DATA AND DISPLAYING THEM IN A TABLE FORMAT */
+
               <tr
                 key={row.year}
                 className="text-center text-gray-700 border-gray-400"
