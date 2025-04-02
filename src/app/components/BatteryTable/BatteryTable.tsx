@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { toDecimalMark } from "@/app/utils/utils";
 import { NumericFormData } from "@/app/Types/formData";
 import BatteryMaintenanceTips from "@/app/EVTips/EVTips";
-import Link from "next/link";
 
 interface BatteryDegradationTableProps {
   formData: NumericFormData;
