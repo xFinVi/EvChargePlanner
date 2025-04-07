@@ -6,10 +6,8 @@ import Input from "../Input/Input";
 const BatteryDegradationForm: React.FC = () => {
   const {
     register,
-    watch,
     formState: { errors },
   } = useFormContext<FormInputs>();
-  const tariffValue = watch("electricityTariff");
 
   return (
     <div className="grid grid-cols-3 gap-4 mt-8 sm:grid-cols-4 max-w-[650px] mx-auto w-full">
@@ -62,31 +60,6 @@ const BatteryDegradationForm: React.FC = () => {
         min="0"
         error={errors.annualMileage?.message}
       />
-      <Input
-        id="electricityTariff"
-        label="Electricity Tariff"
-        placeholder="Enter tariff (e.g., 0.15)"
-        type="range"
-        min="0"
-        max="2"
-        step="0.01"
-        className="w-full h-4 p-4 bg-gray-100 rounded-lg cursor-pointer dark:bg-gray-100 appearance-none
-        [&::-webkit-slider-runnable-track]:bg-yellow-500 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:h-2
-        [&::-moz-range-track]:bg-green-500 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:h-2
-        [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
-        [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:-mt-1
-        [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-blue-500
-        [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-none
-        focus:outline-none"
-        {...register("electricityTariff", {
-          valueAsNumber: true,
-          min: { value: 0, message: "Tariff cannot be negative" },
-          max: { value: 2, message: "Tariff cannot exceed 2" },
-        })}
-        error={errors.electricityTariff?.message}
-      >
-        <p className="text-gray-700">Current tariff: {tariffValue ?? "0"}</p>
-      </Input>
     </div>
   );
 };

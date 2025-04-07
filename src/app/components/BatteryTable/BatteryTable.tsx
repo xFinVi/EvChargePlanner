@@ -95,8 +95,8 @@ export default function BatteryDegradationTable({
         </h2>{" "}
         <p className="mt-4 text-center text-gray-500">
           Please enter all required fields by clicking the{" "}
-          <span className="inline-block mx-1 text-lg font-bold text-[#82d9d9] underline transition-transform duration-150 ease-in-out rounded-lg hover:scale-105 active:scale-105">
-            Battery Degradation
+          <span className="inline-block mx-1 text-lg font-bold text-[#952a18] underline transition-transform duration-150 ease-in-out rounded-lg hover:scale-105 active:scale-105">
+            Battery Degradation Form
           </span>
           button <span className="text-lg font-bold">above</span> to see the
           degradation estimate.
