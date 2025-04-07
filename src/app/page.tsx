@@ -17,6 +17,7 @@ const DynamicDegradationBatteryChart = dynamic(
 );
 
 const Home: React.FC = () => {
+  /* Initializing form data  */
   const [formData, setFormData] = useState({
     numberOfEvs: 0,
     dailyMileage: 0,
@@ -32,7 +33,7 @@ const Home: React.FC = () => {
     electricityTariff: 0.25,
   });
 
-  // Define a condition to check if the necessary data is present
+  // Defined a condition to check if the necessary data is present
   // For example, you might want to check if batteryCapacity is greater than 0
   const shouldDisplayChart = formData.batteryCapacity > 0;
 
@@ -42,6 +43,8 @@ const Home: React.FC = () => {
         <h1>EV Charge Planning Tool</h1>
       </div>
       <div className="mx-auto">
+        {/* Navbar that contains the inputs components to collect necessary data for our app
+         */}
         <Navbar
           onFormChange={(data) => setFormData((prev) => ({ ...prev, ...data }))}
         />
@@ -49,6 +52,8 @@ const Home: React.FC = () => {
           <div className="flex-1">
             <Results formData={formData} />
           </div>
+
+          {/* Displaying dynamically the Battery degradation chart */}
           {shouldDisplayChart && (
             <div className="flex-1 my-10 w-full md:w-[650px] mx-auto md:h-[415px]">
               <DynamicDegradationBatteryChart
@@ -58,6 +63,8 @@ const Home: React.FC = () => {
               />
             </div>
           )}
+
+          {/* Battery degradation table is being render after the user has filled in the degradation form */}
           <BatteryDegradationTable formData={formData} />
         </div>
       </div>

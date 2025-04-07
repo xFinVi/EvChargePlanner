@@ -7,33 +7,21 @@ import Input from "../Input/Input";
 import BatteryDegradationForm from "../BatteryDegradationForm/BatteryDegradationForm";
 import EVSelector from "../EVSelector/EVSelector";
 
+/* Props for the Navbar component, which handles EV form input collection. */
 interface NavbarProps {
+  // Called whenever the form state changes
   onFormChange?: (data: Partial<FormInputs>) => void;
+  // Triggered when the form is reset
   onReset?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
-  const [showDegradation, setShowDegradation] = React.useState(false);
+const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
+  const [showDegradation, setShowDegradation] = React.useState(false); // toggle for degradation form
 
-  const defaultValues: FormInputs = {
-    numberOfEvs: 0,
-    dailyMileage: 0,
-    batteryCapacity: 0,
-    chargingPower: 0,
-    efficiency: 0,
-    evType: "",
-    annualMileage: 0,
-    currentMileage: 0,
-    degradationRate: 2,
-    currentBatteryHealth: 100,
-    years: 10,
-    electricityTariff: 0, // Match Home's initial value
-  };
-
+  // Set up form with validation schema (Zod)
   const form = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
-    defaultValues,
-    mode: "onChange",
+    mode: "onChange", // updates on every change for live tracking and calculations
   });
 
   const {
@@ -43,6 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
     reset,
   } = form;
 
+  // Watch form values and notify parent component on any change
   React.useEffect(() => {
     const subscription = watch((value) => {
       onFormChange?.(value);
@@ -50,10 +39,22 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
     return () => subscription.unsubscribe();
   }, [watch, onFormChange]);
 
-  // Handle reset
+  // Resets the  form  as well as the parent component
   const handleReset = () => {
-    reset(defaultValues); // Reset form state in Navbar
-    onReset?.(); // Reset Home's state
+    reset({
+      numberOfEvs: 0,
+      dailyMileage: 0,
+      batteryCapacity: 0,
+      chargingPower: 0,
+      efficiency: 0,
+      annualMileage: 0,
+      currentMileage: 0,
+      currentBatteryHealth: 100,
+      evType: "",
+      degradationRate: 2,
+      years: 10,
+      electricityTariff: 0.25,
+    });
   };
 
   return (
@@ -61,20 +62,20 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
       className="flex flex-col items-center justify-center p-4"
       id="battery-degradation-btn"
     >
+      {/* Main form inputs */}
       <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 max-w-[1150px]">
-        {/* input component takes props to be rendereed on screen */}
         <Input
           label="Number of EVs"
           id="numberOfEvs"
           type="number"
-          {...register("numberOfEvs", { valueAsNumber: true })}
+          {...register("numberOfEvs")}
           error={errors.numberOfEvs?.message}
         />
         <Input
           label="Daily Mileage"
           id="dailyMileage"
           type="number"
-          {...register("dailyMileage", { valueAsNumber: true })}
+          {...register("dailyMileage")}
           error={errors.dailyMileage?.message}
         />
         <Input
@@ -82,40 +83,43 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
           id="efficiency"
           type="number"
           step="0.1"
-          {...register("efficiency", { valueAsNumber: true })}
+          {...register("efficiency")}
           error={errors.efficiency?.message}
         />
         <Input
           label="Battery Capacity (kWh)"
           id="batteryCapacity"
           type="number"
-          {...register("batteryCapacity", { valueAsNumber: true })}
+          {...register("batteryCapacity")}
           error={errors.batteryCapacity?.message}
         />
         <Input
           label="Charging Power (kW)"
           id="chargingPower"
           type="number"
-          {...register("chargingPower", { valueAsNumber: true })}
+          {...register("chargingPower")}
           error={errors.chargingPower?.message}
         />
       </div>
+      {/* END of form inputs  */}
+
+      {/* Button to toggle battery degradation section */}
       <div className="flex justify-center mt-4">
-        {/* button that shows and hides on click the degradation form */}
         <button
           className={`px-2.5 py-1.5 text-sm font-bold rounded-md 
-      transition-transform duration-150 ease-in-out 
-      ${
-        showDegradation
-          ? "bg-amber-300 hover:bg-amber-400 text-gray-800 hover:scale-105 active:scale-105"
-          : "bg-[#4BC0C0] hover:bg-[#82d9d9] text-white hover:scale-105 active:scale-105"
-      }`}
+          transition-transform duration-150 ease-in-out 
+          ${
+            showDegradation
+              ? "bg-amber-300 hover:bg-amber-400 text-gray-800 hover:scale-105 active:scale-105"
+              : "bg-[#4BC0C0] hover:bg-[#82d9d9] text-white hover:scale-105 active:scale-105"
+          }`}
           onClick={() => setShowDegradation(!showDegradation)}
         >
           {showDegradation ? "Hide" : "Show"} Battery Degradation
         </button>
       </div>
 
+      {/* Info text shown when degradation is hidden */}
       <div
         className={`transition-opacity duration-300 ${
           !showDegradation ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -126,8 +130,7 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
         </p>
       </div>
 
-      {/* Degradation form */}
-
+      {/* Conditionally rendered battery degradation form */}
       <div
         className={`transition-opacity duration-300 ${
           showDegradation ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -142,12 +145,14 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange, onReset }) => {
         )}
       </div>
 
-      {/* EV PRESETS for sample data */}
+      {/* EV selector dropdown with prefilled values */}
       <EVSelector form={form} />
+
+      {/* Reset button to clear all fields */}
       <div className="mt-4 text-center">
         <button
           type="button"
-          onClick={handleReset} // Use synchronized reset handler
+          onClick={handleReset}
           className="px-2 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700"
         >
           Clear All

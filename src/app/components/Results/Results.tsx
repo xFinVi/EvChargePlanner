@@ -54,7 +54,7 @@ export default function Results({ formData }: ResultsProps) {
 
   return (
     <div className="grid justify-center w-full grid-cols-1 gap-4 xs:grid-cols-2 sm:flex sm:flex-wrap justify-items-center">
-      {/* passing props to data components as well as the value of our calculations to be used for displaying purposes */}
+      {/* Data containers displaying the results of the calculations */}
       <Data
         icon={FaCar}
         title="Daily Energy per EV"
@@ -84,5 +84,7 @@ export default function Results({ formData }: ResultsProps) {
         description={`Daily cost at £${formData.electricityTariff}/kWh`}
       />
     </div>
+
+    /* End of containers */
   );
 }
