@@ -22,6 +22,20 @@ export const FORM_DEFAULTS: FormInputs = {
   years: undefined,
   electricityTariff: 0.25,
 };
+export const RESET_VALUES: FormInputs = {
+  numberOfEvs: 0,
+  dailyMileage: 0,
+  batteryCapacity: 0,
+  chargingPower: 0,
+  efficiency: 0,
+  annualMileage: 0,
+  currentMileage: 0,
+  currentBatteryHealth: 0, // Can start empty; user can input a value
+  evType: "", // Empty string for select inputs
+  degradationRate: 0,
+  years: 0,
+  electricityTariff: 0,
+};
 
 //  nubmers form data used for calculations .
 export interface NumericFormData {

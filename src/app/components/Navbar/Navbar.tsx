@@ -1,35 +1,53 @@
 "use client";
 import React from "react";
 import { useFormContext } from "react-hook-form";
-
 import { FormInputs } from "@/app/Types/formSchema";
 import Input from "../Input/Input";
 import BatteryDegradationForm from "../BatteryDegradationForm/BatteryDegradationForm";
 import EVSelector from "../EVSelector/EVSelector";
-import { FORM_DEFAULTS } from "@/app/Types/formData";
+import { RESET_VALUES } from "@/app/Types/formData";
 
+/**
+ * Navbar component for collecting EV form inputs and managing form state.
+ * Renders main inputs and toggles BatteryDegradationForm visibility.
+ */
 const Navbar = () => {
-  const [showDegradation, setShowDegradation] = React.useState(false); // toggle for degradation form
+  // State to toggle visibility of BatteryDegradationForm
+  const [showDegradation, setShowDegradation] = React.useState(false);
+  // State to show success message after reset
+  const [resetSuccess, setResetSuccess] = React.useState(false);
 
-  // Set up form with validation schema (Zod)
-
+  // Access form context from FormProvider set up in Home
   const {
     register,
     formState: { errors },
-
+    watch,
     reset,
   } = useFormContext<FormInputs>();
 
+  // Watch all form fields to check current values
+  const formValues = watch();
+  // Check if any numeric field is greater than 0
+  const hasValuesGreaterThanZero = Object.values(formValues).some(
+    (value) => typeof value === "number" && !isNaN(value) && value > 0
+  );
+  /**
+   * Reset all form fields to their default values (undefined) and hide degradation form.
+   * This ensures a clean slate for the user.
+   */
   const handleReset = () => {
-    reset(FORM_DEFAULTS);
+    reset(RESET_VALUES); // Reset to undefined values
+    setShowDegradation(false); // Hide BatteryDegradationForm for better UX
+    setResetSuccess(true); // Show success message
+    // Hide message after 2 seconds
+    setTimeout(() => setResetSuccess(false), 2000);
   };
-
   return (
     <div
       className="flex flex-col items-center justify-center p-4"
       id="battery-degradation-btn"
     >
-      {/* Main form inputs */}
+      {/* Main form inputs for EV data */}
       <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 max-w-[1150px]">
         <Input
           label="Number of EVs"
@@ -68,25 +86,24 @@ const Navbar = () => {
           error={errors.chargingPower?.message}
         />
       </div>
-      {/* END of form inputs  */}
 
-      {/* Button to toggle battery degradation section */}
+      {/* Button to toggle BatteryDegradationForm visibility */}
       <div className="flex justify-center mt-4">
         <button
           className={`px-2.5 py-1.5 text-sm font-bold rounded-md 
-          transition-transform duration-150 ease-in-out 
-          ${
-            showDegradation
-              ? "bg-amber-300 hover:bg-amber-400 text-gray-800 hover:scale-105 active:scale-105"
-              : "bg-[#4BC0C0] hover:bg-[#82d9d9] text-white hover:scale-105 active:scale-105"
-          }`}
+            transition-transform duration-150 ease-in-out 
+            ${
+              showDegradation
+                ? "bg-amber-300 hover:bg-amber-400 text-gray-800 hover:scale-105 active:scale-105"
+                : "bg-[#992626] hover:bg-red-700 text-white shadow-lg hover:scale-105 active:scale-105"
+            }`}
           onClick={() => setShowDegradation(!showDegradation)}
         >
           {showDegradation ? "Hide" : "Show"} Battery Degradation
         </button>
       </div>
 
-      {/* Info text shown when degradation is hidden */}
+      {/* Prompt when degradation form is hidden */}
       <div
         className={`transition-opacity duration-300 ${
           !showDegradation ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -97,7 +114,7 @@ const Navbar = () => {
         </p>
       </div>
 
-      {/* Conditionally rendered battery degradation form */}
+      {/* Conditionally render BatteryDegradationForm */}
       <div
         className={`transition-opacity duration-300 ${
           showDegradation ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -106,18 +123,26 @@ const Navbar = () => {
         {showDegradation && <BatteryDegradationForm />}
       </div>
 
-      {/* EV selector dropdown with prefilled values */}
+      {/* EV type selector */}
       <EVSelector />
 
-      {/* Reset button to clear all fields */}
+      {/* Reset button to clear all form fields */}
       <div className="mt-4 text-center">
-        <button
-          type="button"
-          onClick={handleReset}
-          className="px-2 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700"
-        >
-          Clear All
-        </button>
+        {hasValuesGreaterThanZero && (
+          <button
+            type="button"
+            onClick={handleReset}
+            className="px-2 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700"
+          >
+            Clear All
+          </button>
+        )}
+
+        {resetSuccess && (
+          <p className="mt-2 text-sm text-green-600 animate-fade-in-out">
+            Form successfully reset!
+          </p>
+        )}
       </div>
     </div>
   );
