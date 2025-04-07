@@ -1,60 +1,27 @@
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormInputs, formSchema } from "@/app/Types/formSchema";
+import { useFormContext } from "react-hook-form";
+
+import { FormInputs } from "@/app/Types/formSchema";
 import Input from "../Input/Input";
 import BatteryDegradationForm from "../BatteryDegradationForm/BatteryDegradationForm";
 import EVSelector from "../EVSelector/EVSelector";
+import { FORM_DEFAULTS } from "@/app/Types/formData";
 
-/* Props for the Navbar component, which handles EV form input collection. */
-interface NavbarProps {
-  // Called whenever the form state changes
-  onFormChange?: (data: Partial<FormInputs>) => void;
-  // Triggered when the form is reset
-  onReset?: () => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
+const Navbar = () => {
   const [showDegradation, setShowDegradation] = React.useState(false); // toggle for degradation form
 
   // Set up form with validation schema (Zod)
-  const form = useForm<FormInputs>({
-    resolver: zodResolver(formSchema),
-    mode: "onChange", // updates on every change for live tracking and calculations
-  });
 
   const {
     register,
     formState: { errors },
-    watch,
+
     reset,
-  } = form;
+  } = useFormContext<FormInputs>();
 
-  // Watch form values and notify parent component on any change
-  React.useEffect(() => {
-    const subscription = watch((value) => {
-      onFormChange?.(value);
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, onFormChange]);
-
-  // Resets the  form  as well as the parent component
   const handleReset = () => {
-    reset({
-      numberOfEvs: 0,
-      dailyMileage: 0,
-      batteryCapacity: 0,
-      chargingPower: 0,
-      efficiency: 0,
-      annualMileage: 0,
-      currentMileage: 0,
-      currentBatteryHealth: 100,
-      evType: "",
-      degradationRate: 2,
-      years: 10,
-      electricityTariff: 0.25,
-    });
+    reset(FORM_DEFAULTS);
   };
 
   return (
@@ -68,14 +35,14 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
           label="Number of EVs"
           id="numberOfEvs"
           type="number"
-          {...register("numberOfEvs")}
+          {...register("numberOfEvs", { valueAsNumber: true })}
           error={errors.numberOfEvs?.message}
         />
         <Input
           label="Daily Mileage"
           id="dailyMileage"
           type="number"
-          {...register("dailyMileage")}
+          {...register("dailyMileage", { valueAsNumber: true })}
           error={errors.dailyMileage?.message}
         />
         <Input
@@ -83,21 +50,21 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
           id="efficiency"
           type="number"
           step="0.1"
-          {...register("efficiency")}
+          {...register("efficiency", { valueAsNumber: true })}
           error={errors.efficiency?.message}
         />
         <Input
           label="Battery Capacity (kWh)"
           id="batteryCapacity"
           type="number"
-          {...register("batteryCapacity")}
+          {...register("batteryCapacity", { valueAsNumber: true })}
           error={errors.batteryCapacity?.message}
         />
         <Input
           label="Charging Power (kW)"
           id="chargingPower"
           type="number"
-          {...register("chargingPower")}
+          {...register("chargingPower", { valueAsNumber: true })}
           error={errors.chargingPower?.message}
         />
       </div>
@@ -136,17 +103,11 @@ const Navbar: React.FC<NavbarProps> = ({ onFormChange }) => {
           showDegradation ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        {showDegradation && (
-          <BatteryDegradationForm
-            register={register}
-            watch={watch}
-            errors={errors}
-          />
-        )}
+        {showDegradation && <BatteryDegradationForm />}
       </div>
 
       {/* EV selector dropdown with prefilled values */}
-      <EVSelector form={form} />
+      <EVSelector />
 
       {/* Reset button to clear all fields */}
       <div className="mt-4 text-center">

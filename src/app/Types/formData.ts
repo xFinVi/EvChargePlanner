@@ -8,6 +8,21 @@ export interface EVTemplate {
   batteryCapacity: number;
 }
 
+export const FORM_DEFAULTS: FormInputs = {
+  numberOfEvs: undefined,
+  dailyMileage: undefined,
+  batteryCapacity: undefined,
+  chargingPower: undefined,
+  efficiency: undefined,
+  annualMileage: undefined,
+  currentMileage: undefined,
+  currentBatteryHealth: undefined, // Can start empty; user can input a value
+  evType: "", // Empty string for select inputs
+  degradationRate: undefined,
+  years: undefined,
+  electricityTariff: 0.25,
+};
+
 //  nubmers form data used for calculations .
 export interface NumericFormData {
   numberOfEvs: number;

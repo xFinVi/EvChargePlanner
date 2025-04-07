@@ -1,13 +1,16 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
+import { FormInputs } from "@/app/Types/formSchema";
 import Input from "../Input/Input";
-import { BatteryDegradationFormProps } from "@/app/Types/formData";
 
-const BatteryDegradationForm: React.FC<BatteryDegradationFormProps> = ({
-  register,
-  watch,
-  errors,
-}) => {
+const BatteryDegradationForm: React.FC = () => {
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext<FormInputs>();
   const tariffValue = watch("electricityTariff");
+
   return (
     <div className="grid grid-cols-3 gap-4 mt-8 sm:grid-cols-4 max-w-[650px] mx-auto w-full">
       <Input
@@ -66,7 +69,6 @@ const BatteryDegradationForm: React.FC<BatteryDegradationFormProps> = ({
         type="range"
         min="0"
         max="2"
-        value={tariffValue}
         step="0.01"
         className="w-full h-4 p-4 bg-gray-100 rounded-lg cursor-pointer dark:bg-gray-100 appearance-none
         [&::-webkit-slider-runnable-track]:bg-yellow-500 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:h-2
@@ -83,10 +85,7 @@ const BatteryDegradationForm: React.FC<BatteryDegradationFormProps> = ({
         })}
         error={errors.electricityTariff?.message}
       >
-        <p className="text-gray-700">
-          {" "}
-          Current tariff: {tariffValue !== undefined ? tariffValue : "0"}
-        </p>
+        <p className="text-gray-700">Current tariff: {tariffValue ?? "0"}</p>
       </Input>
     </div>
   );

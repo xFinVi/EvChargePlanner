@@ -1,22 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { FormInputs } from "@/app/Types/formSchema";
 import { EVTemplate } from "@/app/Types/formData";
 import { EV_TYPES } from "@/app/Constants/DBdata";
 
-//  props for EVSelector component
-interface EVSelectorProps {
-  form: UseFormReturn<FormInputs>; // The form prop is the form instance from react-hook-form
-}
-
-const EVSelector: React.FC<EVSelectorProps> = ({ form }) => {
+const EVSelector: React.FC = () => {
   const [templates, setTemplates] = useState<EVTemplate[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Destructure form methods
-  const { register, watch, setValue } = form;
+  const { register, watch, setValue } = useFormContext<FormInputs>();
 
   // Watch the 'evType' to see which EV type is selected
   const evType = watch("evType");
